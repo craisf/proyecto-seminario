@@ -1,0 +1,9 @@
+.nav-pills li  a:hover{
+	background-color: #EB7726;
+	
+}
+.logo {
+	max-width: 150px;
+	margin-bottom: 20px;
+	border-radius: 50%;
+}

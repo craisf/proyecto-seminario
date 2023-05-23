@@ -1,6 +1,11 @@
+
 CREATE DATABASE proyecto_seminario
 
+-- -------------------------------------------------------------------------------------
+
 USE proyecto_seminario
+
+-- ------------------------------------------------------------------------------------
 
 CREATE TABLE personas
 (
@@ -15,6 +20,8 @@ CREATE TABLE personas
 )
 ENGINE  = INNODB;
 
+-- ------------------------------------------------------------------------------------
+
 CREATE TABLE empleados
 (
 idempleado			INT AUTO_INCREMENT PRIMARY KEY 	NOT NULL,
@@ -27,17 +34,21 @@ CONSTRAINT uk_idpersona_templeados UNIQUE (idpersona)
 )
 ENGINE = INNODB;
 
+-- -------------------------------------------------------------------------------------
+
 CREATE TABLE usuarios
 (
 idusuario			INT AUTO_INCREMENT PRIMARY KEY,
 idempleado			INT 		NOT NULL,
 nombreusuario		 	VARCHAR(30)	NOT NULL,	
-claveacceso			VARCHAR(30)	NOT NULL,
+claveacceso			VARCHAR(100)	NOT NULL,
 nivelacceso			CHAR(20)	NOT NULL, -- ADMIN/ CLIENT / HOST
 CONSTRAINT fk_idempleado_tusuarios FOREIGN KEY (idempleado) REFERENCES empleados (idempleado),
 CONSTRAINT uk_usuario_tusuarios UNIQUE (nombreusuario, claveacceso)
 )
 ENGINE = INNODB;
+
+-- --------------------------------------------------------------------------------------
 
 CREATE TABLE mesas
 (
@@ -47,6 +58,7 @@ capacidad		INT 		NOT NULL
 )
 ENGINE = INNODB;
 
+-- -----------------------------------------------------------------------------------------
 
 CREATE TABLE productos
 (
@@ -57,6 +69,8 @@ precio				DECIMAL(7,2)		NOT NULL,
 categoria			VARCHAR(30)		NOT NULL
 )
 ENGINE = INNODB;
+
+-- ---------------------------------------------------------------------------------------
 
 CREATE TABLE ordenes
 (
@@ -72,6 +86,8 @@ CONSTRAINT fk_idcliente_tordenes FOREIGN KEY (idcliente) REFERENCES personas (id
 )
 ENGINE = INNODB;
 
+-- ----------------------------------------------------------------------------------------
+
 CREATE TABLE DETALLE_ORDENES
 (
 iddetalle_orden		INT AUTO_INCREMENT PRIMARY KEY,
@@ -83,6 +99,8 @@ CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES produ
 )
 ENGINE = INNODB;
 
+-- ------------------------------------------------------------------------------------------
+
 CREATE TABLE pagos 
 (
 idpago			INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,3 +110,4 @@ totalpagar		DECIMAL(7,2)	NOT NULL,
 CONSTRAINT fk_idorden_tpagos FOREIGN KEY (idorden) REFERENCES ordenes (idorden)
 )
 ENGINE = INNODB;
+-- ----------------------------------------------------------------------------------------
