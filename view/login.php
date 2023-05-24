@@ -111,17 +111,15 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
                 body: parametros
               })
                 .then(response =>response.json())
-                .then(datos=>{
-									console.log(datos);
-									if(datos.login){
-										if(datos.nombrerol ==="Guest"){
-											location.href = '../index.php'
-										}else{
-											location.href = ''										
-										}
-									}else{
-
-									}
+                .then(datos=>{					
+					if(datos.login){
+						if(datos.nombrerol ==="Guest"){
+							location.href = '../index.php'
+						}else{
+							location.href = ''										
+						}
+					}else{	
+					}							
                 })
             }
 
