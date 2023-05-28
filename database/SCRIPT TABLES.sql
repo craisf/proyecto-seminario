@@ -1,10 +1,9 @@
 
-CREATE DATABASE proyecto_seminario
+CREATE DATABASE proyecto_seminario;
 
 -- -------------------------------------------------------------------------------------
 
-USE proyecto_seminario
-
+USE proyecto_seminario;
 -- ------------------------------------------------------------------------------------
 
 CREATE TABLE personas
@@ -42,7 +41,7 @@ idusuario			INT AUTO_INCREMENT PRIMARY KEY,
 idempleado			INT 		NOT NULL,
 nombreusuario		 	VARCHAR(30)	NOT NULL,	
 claveacceso			VARCHAR(100)	NOT NULL,
-nivelacceso			CHAR(20)	NOT NULL, -- ADMIN/ CLIENT / HOST
+nivelacceso			CHAR(20)	NOT NULL, -- ADMIN/ EMPLEADO
 CONSTRAINT fk_idempleado_tusuarios FOREIGN KEY (idempleado) REFERENCES empleados (idempleado),
 CONSTRAINT uk_usuario_tusuarios UNIQUE (nombreusuario, claveacceso)
 )
@@ -64,7 +63,7 @@ CREATE TABLE productos
 (
 idproducto			INT AUTO_INCREMENT PRIMARY KEY,
 nombreproducto			VARCHAR(80)		NOT NULL,
-descripcion			VARCHAR(90)		NOT NULL,
+descripcion			VARCHAR(500)		NOT NULL,
 precio				DECIMAL(7,2)		NOT NULL,
 categoria			VARCHAR(30)		NOT NULL
 )
@@ -104,10 +103,9 @@ ENGINE = INNODB;
 CREATE TABLE pagos 
 (
 idpago			INT AUTO_INCREMENT PRIMARY KEY,
-idorden			INT 		NOT NULL,
-fechahorapago		DATETIME 	NOT NULL,
+iddetalle_orden		INT 		NOT NULL,
+fechahorapago		DATETIME 	NOT NULL DEFAULT NOW(),
 totalpagar		DECIMAL(7,2)	NOT NULL,
-CONSTRAINT fk_idorden_tpagos FOREIGN KEY (idorden) REFERENCES ordenes (idorden)
+CONSTRAINT fk_idorden_tpagos FOREIGN KEY (iddetalle_orden) REFERENCES detalle_ordenes (iddetalle_orden)
 )
 ENGINE = INNODB;
--- ----------------------------------------------------------------------------------------
