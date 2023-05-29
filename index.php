@@ -130,6 +130,7 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
 						// 		login();
 						// 	}
 						// })
+						
 
         })
     </script>
