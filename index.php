@@ -15,7 +15,7 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 
-<body class="bg-info d-flex justify-content-center align-items-center vh-100">
+<body class="bg-secondary d-flex justify-content-center align-items-center vh-100">
 	<div class="bg-white p-5 rounded-5 text-secondary shadow">
 		<div class="d-flex justify-content-center text-secondary" style="width:25 rem"> 
 			<img src="./img/ratatouille.png" alt="login-logo"
@@ -46,7 +46,7 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
 			</div>
 		</div>
 		<div class="btn btn-info text-white w-100 mt-1 fw-senibold shadow-sm" id="Log_in">Login</div>
-		<a class="btn btn-info text-white w-100 mt-1 fw-senibold shadow-sm" href="index.php">Cancel</a>
+		
 		<div class="d-flex gap-1 justify-content-center mt-1">
 			<div>Don't have an account?</div>
 			<a href="./register.user.php" class="text-decoration-none text-info fw-semibold">Register</a>
@@ -114,10 +114,10 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
                 .then(response =>response.json())
                 .then(datos=>{					
 					if(datos.login){
-						if(datos.nombrerol ==="Guest"){
+						if(datos){
 							location.href = './view/menu.php'
 						}else{
-							location.href = ''										
+							location.href = 'index.php'										
 						}
 					}else{	
 					}							

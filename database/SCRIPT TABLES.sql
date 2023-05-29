@@ -73,15 +73,16 @@ ENGINE = INNODB;
 
 CREATE TABLE ordenes
 (
-idorden			INT AUTO_INCREMENT PRIMARY KEY,
-idmesa			INT 			NOT NULL,
-idempleado 		INT 			NOT NULL,
-idcliente		INT 			NOT NULL,
+idorden				INT AUTO_INCREMENT PRIMARY KEY,
+idmesa				INT 			NOT NULL,
+idempleado 			INT 			NOT NULL,
+idcliente			INT 			NOT NULL,
 fechahoraorden	 	DATETIME	 	DEFAULT NOW(),
-estado			CHAR(30) 		NOT NULL, 	-- pendiente, en proceso, entregada
+idestadoorden		INT 	 		NOT NULL, 	-- pendiente, en proceso, entregada
 CONSTRAINT fk_idmesa_tordenes FOREIGN KEY (idmesa) REFERENCES mesas (idmesa),
 CONSTRAINT fk_idempleado_tordenes FOREIGN KEY (idempleado) REFERENCES empleados (idempleado),
-CONSTRAINT fk_idcliente_tordenes FOREIGN KEY (idcliente) REFERENCES personas (idpersona)
+CONSTRAINT fk_idcliente_tordenes FOREIGN KEY (idcliente) REFERENCES personas (idpersona),
+CONSTRAINT fk_idestadoorden_tordenes FOREIGN KEY (idestadoorden) REFERENCES estado_ordenes (idestadoorden)
 )
 ENGINE = INNODB;
 
@@ -95,6 +96,16 @@ idproducto		INT 	NOT NULL,
 cantidad		INT 	NOT NULL,
 CONSTRAINT fk_idorden_TdetalleOrden FOREIGN KEY (idorden) REFERENCES ordenes (idorden),
 CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
+)
+ENGINE = INNODB;
+-- ----------------------------
+
+
+
+CREATE TABLE estado_ordenes
+(
+idestadoorden		INT AUTO_INCREMENT PRIMARY KEY,
+estado				VARCHAR(20)
 )
 ENGINE = INNODB;
 

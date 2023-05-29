@@ -15,68 +15,31 @@ CALL spu_user_login('monoloco');
 -- ----------------------------------------------------
 
 DELIMITER $$
-CREATE PROCEDURE spu_ordenes_estados()
-BEGIN
-	SELECT 
-		CONCAT(personas.`nombre`, ' ', personas.`apellido`) AS 'cliente',
-		mascotas.`nombre`,
-		tipomascotas.`nombreTipo`,
-		razas.`nombreRaza`,
-		estados.`nombreEstado`,
-		procesoadopciones.`idEstado`,
-		adopciones.`idAdopcion`,
-		mascotas.`urlimgmasc`,
-		mascotas.`altura`,
-		mascotas.`color`,
-		mascotas.sexo,
-		personas.`documentoIdentidad`,
-		personas.`telefono`,
-		personas.`email`,
-		personas.`fechaNacimiento`
-	FROM ordenes
-	INNER JOIN detalle_ordenes ON detalle_ordenes.`idorden` = ordenes.`idorden`
-	INNER JOIN detalle_ordenes ON detalle_ordenes.idproducto = productos.idproducto
-	INNER JOIN mesas ON mesas.idmesa = ordenes.idmesa
-	INNER JOIN empleados ON empleados.idempleado = ordenes.idempleado
-	INNER JOIN empleados ON empleados.idpersona = personas.idpersona
-	
-	INNER JOIN adoptantes ON adoptantes.`idAdoptante` = adopciones.`idAdoptante`
-	INNER JOIN personas ON personas.`idPersona` = adoptantes.`idPersona`
-	INNER JOIN mascotas ON mascotas.`idMascota` = adopciones.`idMascota`
-	INNER JOIN razas ON razas.idRaza = mascotas.`idRaza`
-	INNER JOIN tipomascotas ON `tipomascotas`.`idTipmas` = razas.`idTipmas`
-	INNER JOIN estados ON estados.`idEstado` = procesoadopciones.`idEstado`
-	WHERE idProcesoAdopcion 
-	IN (SELECT MAX(idProcesoAdopcion) FROM procesoadopciones GROUP BY idAdopcion)
-    ORDER BY estados.secuencia ASC;
-END $$
-
-
-
-DELIMITER $$
 CREATE PROCEDURE spu_listar_ordenes()
 BEGIN
 SELECT
-ordenes.idorden,
-CONCAT (cli.nombre,
-  cli.apellido) AS 'Cliente',
+	ordenes.idorden,
+	CONCAT (cli.nombre, ' ',
+  cli.apellido) AS 'Cliente', 
   productos.nombreproducto,
   mesas.numesa, CONCAT (emp.nombre, ' ',
   emp.apellido) AS 'Empleado',
   ordenes.fechahoraorden,
-  ordenes.estado
+  estado_ordenes.estado
 FROM
   ordenes
   INNER JOIN detalle_ordenes ON detalle_ordenes.`idorden` = ordenes.`idorden`
   INNER JOIN productos ON productos.idproducto = detalle_ordenes.idproducto
+  INNER JOIN estado_ordenes ON estado_ordenes.idestadoorden = ordenes.idestadoorden
   INNER JOIN mesas ON mesas.idmesa = ordenes.idmesa
   INNER JOIN empleados ON empleados.idempleado = ordenes.idempleado
   INNER JOIN personas emp ON emp.idpersona = empleados.idpersona
   INNER JOIN personas cli ON cli.idpersona = ordenes.idcliente
-	WHERE ordenes.estado IN(SELECT MAX(ordenes.estado) FROM ordenes GROUP BY idorden) 
-	ORDER BY ordenes.estado ASC
+	WHERE estado_ordenes.estado IN(SELECT MAX(estado_ordenes.estado) FROM estado_ordenes GROUP BY estado) 
+	ORDER BY estado_ordenes.estado ASC;
 END $$
 
+CALL spu_listar_ordenes()
 
 SELECT idempleado, CONCAT (personas.nombre,personas.apellido) AS 'empleados',nombrerol FROM empleados
     INNER JOIN personas ON personas.idpersona = empleados.idpersona
@@ -84,3 +47,66 @@ SELECT idempleado, CONCAT (personas.nombre,personas.apellido) AS 'empleados',nom
 UPDATE ordenes SET
 estado = 'EN proceso'
 WHERE idorden = 1
+
+
+ INSERT INTO ordenes (idmesa,idempleado,idcliente,idestadoorden)VALUES
+('1', '3', '5', 'PENDIENTE'),
+('2', '3', '6', 'PENDIENTE')
+SELECT * FROM ordenes
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_ordenes_registrar(IN _idmesa INT, IN _idempleado INT, IN _idcliente INT, IN _idestadoorden INT)
+BEGIN
+INSERT INTO ordenes (idmesa, idempleado, idcliente, idestadoorden)
+VALUES (_idmesa ,_idempleado,_idcliente ,_idestadoorden)
+END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_registar(
+IN _idmesa INT,
+IN _idempleado INT,
+IN _idcliente INT,
+IN _idestadoorden INT
+)
+BEGIN
+INSERT INTO ordenes (idmesa, idempleado, idcliente, idestadoorden)
+VALUES (_idmesa ,_idempleado,_idcliente ,_idestadoorden);
+END $$
+
+
+
+DELIMITER  $$
+CREATE PROCEDURE spu_editar_orden(
+IN _idorden INT,
+IN _idmesa INT,
+IN _idempleado INT,
+IN _idcliente INT,
+IN _idestadoorden INT)
+BEGIN 
+UPDATE ordenes SET
+idmesa = _idmesa,
+idempleado = _idempleado,
+idcliente = _idcliente,
+idestadoorden = _idestadooren
+WHERE idorden = _idorden;
+END $$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

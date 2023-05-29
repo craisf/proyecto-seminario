@@ -28,7 +28,7 @@ session_start();
 								<i class="fa fa-home"></i>
 								<span class="ms-2 d-none d-sm-inline">Home</span>
 							</a>
-						</li>
+						</li>						
 						<li class="nav-item my-1">
 							<a href="#" class="nav-link text-white" aria-current="page">
 								<i class="fa fa-gauge"></i>
@@ -87,30 +87,185 @@ session_start();
 						echo '
 						<a class="btn border-none outline-none text-white " type="button" id="triggerId" href="./view/login.php">log in</a>';
 					}
-					?>					
+					?>			
+							
 				</div>
 			</div>
-			<div class="p-3 col-md-10">
-			<table id="tbauto" class="table table-striped table-sm">
-				<thead>
-					<tr>
-					<th>#</th>					
-					<th>Cliente</th>					
-					<th>Nombre Platos</th>
-					<th>N° Mesa</th>
-					<th>Empleado</th>
-					<th>FechaOrden</th>
-					<th>Estado</th>
-					</tr>
-				</thead>
-				<tbody>
+			<div class="p-3 col-md-10 mt-3">
+				<table id="tbmenu" class="table table-striped table-sm">
+					<thead>
+						<tr>
+						<th>#</th>					
+						<th>Cliente</th>					
+						<th>Producto</th>
+						<th>N° Mesa</th>
+						<th>Empleado</th>
+						<th>FechaOrden</th>
+						<th>Estado</th>
+						
+						</tr>
+					</thead>
+					<tbody>
 
 					</tbody>
-				</table>
-			</div>
+					</table>
+					<!-- Modal trigger button -->
+					<button type="button" class="btn btn-sm btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
+						Launch
+					</button>
+					
+					<!-- Modal Body -->
+					<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+					<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered " role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="modalTitleId">Registar Orden</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form action="" id="formProducts">										
+										<div class="mb-3">
+											<label for="Cliente" class="form-label">Cliente</label>
+											<input type="text" class="form-control form-control-sm" id="cliente">
+										</div>
+										<div class="mb-3">
+											<label for="Producto" class="form-label">Producto</label>
+											<input type="text" class="form-control form-control-sm" id="producto">
+										</div>
+										<div class="mb-3">
+											<label for="Mesa" class="form-label">Mesa</label>
+											<input type="text" class="form-control form-control-sm text-end" id="mesa">
+										</div>
+										<div class="mb-3">
+											<label for="Empleado" class="form-label">Empleado</label>
+											<input type="text" class="form-control form-control-sm" id="empleado">
+										</div>
+										<div class="mb-3">
+											<label for="Estado" class="form-label">Estado</label>
+											<input type="text" class="form-control form-control-sm " id="estado">
+										</div>										
+									</form>									
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+									<button type="button" class="btn btn-sm btn-info" id="registrar">Registrar</button>
+								</div>
+							</div>
+						</div>
+					</div>			
+			</div>			
 		</div>
+
 	</div>
-	
+	<div class="modal fade" id="modal-automoviles" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">Actualizar Pedido</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="md-Marca" class="form-label">Cliente</label>
+            <input type="text" class="form-control form-control-sm" id="md-cliente">
+          </div>
+          <div class="mb-3">
+            <label for="md-modelo" class="form-label">Producto</label>
+            <input type="text" class="form-control form-control-sm" id="md-producto">
+          </div>
+          <div class="mb-3">
+            <label for="md-precio" class="form-label">Mesa</label>
+            <input type="text" class="form-control form-control-sm text-end" id="md-precio">
+          </div>
+          <div class="mb-3">
+            <label for="md-tipoCombustible" class="form-label">Empleado</label>
+            <input type="text" class="form-control form-control-sm" id="md-tipoCombustible">
+          </div>
+          <div class="mb-3">
+            <label for="md-color" class="form-label">Estado</label>
+            <input type="text" class="form-control form-control-sm " id="md-color">
+          </div>          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="actualizar">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", ()=>{
+
+			const cliente =  document.getElementById("cliente");
+			const producto =  document.getElementById("producto");
+			const mesa =  document.getElementById("mesa");
+			const empleado =  document.getElementById("empleado");
+			const estado =  document.getElementById("estado");
+			const btGuardar = document.getElementById("registrar");
+
+			const tablaMenu = document.querySelector("#tbmenu");
+      const cuerpoTabla = tablaMenu.querySelector("tbody");
+
+			function renderData(){
+				const parametros = new URLSearchParams();
+				parametros.append("operacion", "listarMenu");
+
+				fetch("../controllers/Menu.controller.php",{
+					method: 'POST',
+					body: parametros
+				})
+					.then(response => response.json())
+					.then(datos =>{
+						cuerpoTabla.innerHTML=``;
+						datos.forEach(element =>{
+              let fila = `
+              <tr>
+                <td>${element.idorden	}</td>  
+                <td>${element.Cliente}</td>  
+                <td>${element.nombreproducto}</td>
+                <td>${element.numesa}</td>
+                <td>${element.Empleado}</td>
+                <td>${element.fechahoraorden}</td>
+								<td>${element.estado}</td>
+                <td>
+                  <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'>Eliminar</a>
+                  <a href='#' class='editar' btn btn-info btn-sm' data-idorden='${element.idorden}'>Editar</a>
+                </td>
+              </tr>
+              `;
+              cuerpoTabla.innerHTML +=fila;
+					})	
+				})				
+			}
+			function registrarMenu(){
+				if(confirm("Esta seguro de Guardar La Orden")){
+					const parametros = new FormData();
+					parametros.append("operacion", "RegistrarMenu");
+					parametros.append("cliente", cliente.value);
+					parametros.append("producto",producto.value);
+					parametros.append("mesa", mesa.value);
+					parametros.append("empleado", empleado.value);
+					parametros.append("estado", estado.value);
+					fetch("../controllers/Menu.controller.php",{
+						method: 'POST',
+						body: parametros
+					})
+						.then(response => response.json())
+						.then(datos=>{
+							document.getElementById("formProducts").reset();
+							renderData();
+						})
+				}
+			}
+			btGuardar.addEventListener("click",registrarMenu);
+			
+
+			renderData();
+		});
+
+	</script>
 </body>
 </html>
