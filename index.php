@@ -115,7 +115,7 @@ if (isset($_SESSION["seguridad"]) && $_SESSION["seguridad"]["login"]) {
                 .then(datos=>{					
 					if(datos.login){
 						if(datos){
-							location.href = './view/menu.php'
+							location.href = './view/graphic.php'
 						}else{
 							location.href = 'index.php'										
 						}

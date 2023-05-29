@@ -24,16 +24,25 @@ session_start();
 					<hr class="text-white"/>
 					<ul class="nav nav-pills flex-column mt-2 mt-sm-0" id="menu">
 						<li class="nav-item my-1">
-							<a href="menu.php" class="nav-link text-white" aria-current="page">
+							<a href="graphic.php" class="nav-link text-white" aria-current="page">
 								<i class="fa fa-home"></i>
 								<span class="ms-2 d-none d-sm-inline">Home</span>
 							</a>
 						</li>						
-						<li class="nav-item my-1">
-							<a href="#" class="nav-link text-white" aria-current="page">
-								<i class="fa fa-gauge"></i>
-								<span class="ms-2 d-none d-sm-inline">Dashboard</span>
+						<li class="nav-item my-1 disabled">
+							<a href="#sidemenu" data-bs-toggle="collapse" class="nav-link text-white" aria-current="page">
+								<i class="fa fa-table"></i>
+								<span class="ms-2 d-none d-sm-inline">Dashboar</span>
+								<i class="fa fa-caret-down"></i>
 							</a>
+							<ul class="nav collapse ms-1 flex-column" id="sidemenu" data-bs-parent="#menu">
+								<li class="nav-item">
+									<a class="nav-link text-white" href="menu.php" aria-current="page">Orden</a>
+								</li>	
+                <li class="nav-item">
+									<a class="nav-link text-white" href="#" aria-current="page">Detalle</a>
+								</li>													
+							</ul>
 						</li>
 						<li class="nav-item my-1 disabled">
 							<a href="#sidemenupdf" data-bs-toggle="collapse" class="nav-link text-white" aria-current="page">
@@ -50,21 +59,7 @@ session_start();
 								</li>								
 							</ul>
 						</li>
-						<li class="nav-item my-1 disabled">
-							<a href="#sidemenugra" data-bs-toggle="collapse" class="nav-link text-white" aria-current="page">
-								<i class="fa fa-table"></i>
-								<span class="ms-2 d-none d-sm-inline">GRAPHIC</span>
-								<i class="fa fa-caret-down"></i>
-							</a>
-							<ul class="nav collapse ms-1 flex-column" id="sidemenugra" data-bs-parent="#menu">
-								<li class="nav-item">
-									<a class="nav-link text-white" href="#" aria-current="page">GRAPHIC 1</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link text-white" href="#">GRAPHIC 2</a>
-								</li>								
-							</ul>
-						</li>
+						
 					</ul>
 				</div>
 				<div>
@@ -85,35 +80,31 @@ session_start();
 							';
 					} else {
 						echo '
-						<a class="btn border-none outline-none text-white " type="button" id="triggerId" href="./view/login.php">log in</a>';
+						<a class="btn border-none outline-none text-white " type="button" id="triggerId" href="../index.php">log in</a>';
 					}
 					?>			
 							
 				</div>
 			</div>
 			<div class="p-3 col-md-10 mt-3">
-				<table id="tbmenu" class="table table-striped table-sm">
+				<!-- -- <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalId">Registrar Orden</button> -->
+				<a href="" class="btn btn-dark btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#modalId"><i class="fa-solid fa-money-bill-1-wave"></i>  Registrar Orden</a>
+				<table id="tbmenu" class="table table-striped table-sm mt-3">
 					<thead>
 						<tr>
 						<th>#</th>					
-						<th>Cliente</th>					
-						<th>Producto</th>
 						<th>N° Mesa</th>
 						<th>Empleado</th>
 						<th>FechaOrden</th>
 						<th>Estado</th>
-						
+						<th>Operaciones</th>
 						</tr>
 					</thead>
 					<tbody>
 
 					</tbody>
 					</table>
-					<!-- Modal trigger button -->
-					<button type="button" class="btn btn-sm btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
-						Launch
-					</button>
-					
+
 					<!-- Modal Body -->
 					<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
 					<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
@@ -124,15 +115,7 @@ session_start();
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
-									<form action="" id="formProducts">										
-										<div class="mb-3">
-											<label for="Cliente" class="form-label">Cliente</label>
-											<input type="text" class="form-control form-control-sm" id="cliente">
-										</div>
-										<div class="mb-3">
-											<label for="Producto" class="form-label">Producto</label>
-											<input type="text" class="form-control form-control-sm" id="producto">
-										</div>
+									<form action="" id="formProducts">																				
 										<div class="mb-3">
 											<label for="Mesa" class="form-label">Mesa</label>
 											<input type="text" class="form-control form-control-sm text-end" id="mesa">
@@ -144,7 +127,7 @@ session_start();
 										<div class="mb-3">
 											<label for="Estado" class="form-label">Estado</label>
 											<input type="text" class="form-control form-control-sm " id="estado">
-										</div>										
+										</div>																				
 									</form>									
 								</div>
 								<div class="modal-footer">
@@ -199,8 +182,7 @@ session_start();
 	<script>
 		document.addEventListener("DOMContentLoaded", ()=>{
 
-			const cliente =  document.getElementById("cliente");
-			const producto =  document.getElementById("producto");
+
 			const mesa =  document.getElementById("mesa");
 			const empleado =  document.getElementById("empleado");
 			const estado =  document.getElementById("estado");
@@ -224,15 +206,13 @@ session_start();
               let fila = `
               <tr>
                 <td>${element.idorden	}</td>  
-                <td>${element.Cliente}</td>  
-                <td>${element.nombreproducto}</td>
                 <td>${element.numesa}</td>
                 <td>${element.Empleado}</td>
                 <td>${element.fechahoraorden}</td>
-								<td>${element.estado}</td>
+								<td>${element.estado}</td>									
                 <td>
-                  <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'>Eliminar</a>
-                  <a href='#' class='editar' btn btn-info btn-sm' data-idorden='${element.idorden}'>Editar</a>
+                  <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-trash"></i></a>
+                  <a href='#' class='editar' btn btn-info btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-pen-nib"></i></a>
                 </td>
               </tr>
               `;
@@ -243,9 +223,7 @@ session_start();
 			function registrarMenu(){
 				if(confirm("Esta seguro de Guardar La Orden")){
 					const parametros = new FormData();
-					parametros.append("operacion", "RegistrarMenu");
-					parametros.append("cliente", cliente.value);
-					parametros.append("producto",producto.value);
+					parametros.append("operacion", "registrarMenu");
 					parametros.append("mesa", mesa.value);
 					parametros.append("empleado", empleado.value);
 					parametros.append("estado", estado.value);

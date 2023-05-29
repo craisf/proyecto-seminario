@@ -1,20 +1,20 @@
 -- ----------------------------------------------------------
 INSERT INTO personas (nombre, apellido, celular, correo, direccion, tipodoc, numerodoc)VALUES
-('Carlos ','Moran Gonzales','956321478','carlos@gmail.com','Santa Rosa','DNI','71594314'),
-('María','López Arriaga','912345678','maria.lopez@gmail.com','Calle 123, Ciudad Ejemplo','DNI','12345678'),
-('Juan','García Muñoz','998765432','juan.garcia@gmail.com',' Avenida Principal, Pueblo Nuevo','DNI','75369821'),
-('Ana','Rodríguez Salazar','955556231','ana.rodriguez@gmail.com','Calle 456, Urbanización Bella Vista','DNI','98765432'),
-('Pedro','Martínez Suñiga','911561283','pedro.martinez@gmail.com','Avenida Libertad, Barrio Centro','DNI','87654321'),
-('Laura','Sánchez Gutierrez','999005208','laura.sanchez@gmail.com','Calle 789, Colonia Esperanza','DNI','98765405')
+('Carlos ','Moran G','956321478','carlos@gmail.com','Santa Rosa','DNI','71594314'),
+('María','López ','912345678','maria.lopez@gmail.com','Calle 123, Ciudad Ejemplo','DNI','12345678'),
+('Juan','García ','998765432','juan.garcia@gmail.com',' Avenida Principal, Pueblo Nuevo','DNI','75369821'),
+('Ana','Rodríguez ','955556231','ana.rodriguez@gmail.com','Calle 456, Urbanización Bella Vista','DNI','98765432'),
+('Pedro','Martínez ','911561283','pedro.martinez@gmail.com','Avenida Libertad, Barrio Centro','DNI','87654321'),
+('Laura','Sánchez ','999005208','laura.sanchez@gmail.com','Calle 789, Colonia Esperanza','DNI','98765405')
 
 SELECT * FROM personas
 
 -- ----------------------------------------------------------
-INSERT INTO empleados (idpersona, nombrerol, turnoinicio) VALUES 
-('1','RECEPCIONISTA','08:00:00'),
-('2','MAITRE','08:00:00'),
-('3','MESERO','08:00:00'),
-('4','CHEF','08:00:00')
+INSERT INTO empleados (idpersona, nombrerol) VALUES 
+('1','RECEPCIONISTA'),
+('2','MAITRE'),
+('3','MESERO'),
+('4','CHEF')
 
 
 SELECT * FROM empleados
@@ -36,10 +36,10 @@ SET
 WHERE idusuario = '1' 
 -- ------------------------
 INSERT INTO mesas (numesa, capacidad) VALUES
-(1, 4),
-(2, 8),
-(3, 6),
-(4, 12)
+('Mesa 1', 4),
+('Mesa 2', 8),
+('Mesa 3', 6),
+('Mesa 4', 12)
 
 SELECT * FROM mesas
  -- ---------------------------
@@ -82,25 +82,35 @@ INSERT INTO productos (nombreproducto,descripcion,precio,categoria) VALUES
         )
         SELECT * FROM productos 
 -- ---------------------------------
- INSERT INTO ordenes (idmesa,idempleado,idcliente,idestadoorden )VALUES
-('1', '3', '5', '1'),
-('2', '3', '6', '1')
-SELECT * FROM ordenes
- -- ---------------------------------
-INSERT INTO detalle_ordenes (idorden, idproducto, cantidad)
-VALUES
-('1', '2', '4'),
-('2', '3', '8')
-SELECT * FROM detalle_ordenes
--- --------------------------
-INSERT INTO pagos (iddetalle_orden,fechahorapago,totalpagar)VALUES
-('1','2023-05-26','51.96'),
-('2','2023-05-26','119.92')
--- --------------------------------
 INSERT INTO estado_ordenes (estado) VALUES
 ('Pendiente'),
 ('Proceso'), 
 ('entregadado')
+
+SELECT * FROM estado_ordenes
+
+-- --------------------------------------
+ INSERT INTO ordenes (idmesa,idempleado,idestadoorden )VALUES
+('1','3','1'),
+('2','3','1')
+
+SELECT * FROM ordenes
+ -- ---------------------------------
+ INSERT INTO pagos (fechahorapago,totalpagar)VALUES
+('2023-05-26','51.96'),
+('2023-05-26','119.92')
+
+SELECT * FROM detalle_ordenes
+-- ------------------------------
+INSERT INTO detalle_ordenes (idorden,idcliente, idproducto, cantidad, idpago)
+VALUES
+('1', '2', '2', '4','1'),
+('2', '3', '4','8','2')
+
+
+
+
+
 
 
 SELECT * FROM pagos

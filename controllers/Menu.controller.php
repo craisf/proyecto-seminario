@@ -2,7 +2,7 @@
 require_once '../models/Menu.model.php';
 
 
-if(isset($_POST["operacion"])){
+if(isset($_POST['operacion'])){
   
   $menu = new Menu();
 
@@ -15,14 +15,13 @@ if(isset($_POST["operacion"])){
     } */
   }
 
-  if($_POST["operacion"] == 'RegistrarMenu'){
-    $datosGuardar = [
-      "idmesa" => $_POST['idmesa'],
-      "idempleado" => $_POST['idempleado'],
-      "idcliente" => $_POST['idcliente'],
-      "idestadoorden" => $_POST['idestadoorden']
+  if($_POST['operacion'] == 'registrarMenu'){
+    $datosGuardar = [      
+      "idmesa"      => $_POST['idmesa'],
+      "idempleado"  => $_POST['idempleado'],      
+      "idestado"    => $_POST['idestadoorden']
     ];
-    $respuesta = $menu->RegistrarMenu($datosGuardar);
+    $respuesta = $menu->registrarMenu($datosGuardar);
     echo json_encode($respuesta);
 
   }

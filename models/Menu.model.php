@@ -21,18 +21,17 @@ class Menu extends Conexion{
   }
 
 
-  public function RegistrarMenu($datos = []){
+  public function registrarMenu($datos = []){
     $respuesta = [
       "status" => false,
       "message" => ""
     ];
     try{
-      $consulta = $this->conexion->prepare("CALL spu_listar_ordenes(?,?,?,?)");
-      $respuesta["status"] = $consulta->execute(
+      $consulta = $this->conexion->prepare("CALL spu_registrar(?,?,?)");
+      $respuesta["false"] = $consulta->execute(
         array(
         $datos["idmesa"],
-        $datos["idempleado"],
-        $datos["idcliente"],
+        $datos["idempleado"],      
         $datos["idestadoorden"]      
         )
       );      

@@ -19,9 +19,6 @@ CREATE PROCEDURE spu_listar_ordenes()
 BEGIN
 SELECT
 	ordenes.idorden,
-	CONCAT (cli.nombre, ' ',
-  cli.apellido) AS 'Cliente', 
-  productos.nombreproducto,
   mesas.numesa, CONCAT (emp.nombre, ' ',
   emp.apellido) AS 'Empleado',
   ordenes.fechahoraorden,
@@ -34,7 +31,7 @@ FROM
   INNER JOIN mesas ON mesas.idmesa = ordenes.idmesa
   INNER JOIN empleados ON empleados.idempleado = ordenes.idempleado
   INNER JOIN personas emp ON emp.idpersona = empleados.idpersona
-  INNER JOIN personas cli ON cli.idpersona = ordenes.idcliente
+
 	WHERE estado_ordenes.estado IN(SELECT MAX(estado_ordenes.estado) FROM estado_ordenes GROUP BY estado) 
 	ORDER BY estado_ordenes.estado ASC;
 END $$
@@ -62,19 +59,20 @@ INSERT INTO ordenes (idmesa, idempleado, idcliente, idestadoorden)
 VALUES (_idmesa ,_idempleado,_idcliente ,_idestadoorden)
 END $$
 
+DROP PROCEDURE spu_registrar
 
 DELIMITER $$
-CREATE PROCEDURE spu_registar(
+CREATE PROCEDURE spu_registrar(
 IN _idmesa INT,
 IN _idempleado INT,
-IN _idcliente INT,
 IN _idestadoorden INT
 )
 BEGIN
-INSERT INTO ordenes (idmesa, idempleado, idcliente, idestadoorden)
-VALUES (_idmesa ,_idempleado,_idcliente ,_idestadoorden);
+INSERT INTO ordenes (idmesa, idempleado, idestadoorden)
+VALUES (_idmesa ,_idempleado,_idestadoorden);
 END $$
 
+CALL spu_registrar('2','3','1');
 
 
 DELIMITER  $$
