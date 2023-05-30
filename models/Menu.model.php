@@ -9,9 +9,9 @@ class Menu extends Conexion{
   }
 
 
-  public function ListarMenu(){
+  public function mostrarMesas(){
     try{
-      $consulta = $this->conexion->prepare("CALL spu_listar_ordenes()");
+      $consulta = $this->conexion->prepare("CALL spu_listar_mesas()");
       $consulta->execute();
       return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -31,8 +31,7 @@ class Menu extends Conexion{
       $respuesta ["status"]=$consulta->execute(
         array(
         $datos["idmesa"],
-        $datos["idempleado"],    
-        $datos["idestadoorden"]
+        $datos["idempleado"]
         )
       ); 
           
@@ -42,4 +41,27 @@ class Menu extends Conexion{
     }  
     return $respuesta;    
   }
+
+  public function listarMesas(){
+    try{
+      $consulta = $this->conexion->prepare("SELECT * FROM mesas");
+      $consulta->execute();
+      return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch(Exceptio $e){
+      die($e->getMessage());
+    }
+  }
+
+  public function listarCarta(){
+    try{
+      $consulta = $this->conexion->prepare("SELECT * FROM productos");
+      $consulta->execute();
+      return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+    catch(Exceptio $e){
+      die($e->getMessage());
+    }
+  }
+
 }

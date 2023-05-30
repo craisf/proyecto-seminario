@@ -1,6 +1,6 @@
 -- ----------------------------------------------------------
 INSERT INTO personas (nombre, apellido, celular, correo, direccion, tipodoc, numerodoc)VALUES
-('Carlos ','Moran G','956321478','carlos@gmail.com','Santa Rosa','DNI','71594314'),
+('Carlos ','Moran ','956321478','carlos@gmail.com','Santa Rosa','DNI','71594314'),
 ('María','López ','912345678','maria.lopez@gmail.com','Calle 123, Ciudad Ejemplo','DNI','12345678'),
 ('Juan','García ','998765432','juan.garcia@gmail.com',' Avenida Principal, Pueblo Nuevo','DNI','75369821'),
 ('Ana','Rodríguez ','955556231','ana.rodriguez@gmail.com','Calle 456, Urbanización Bella Vista','DNI','98765432'),
@@ -36,10 +36,20 @@ SET
 WHERE idusuario = '1' 
 -- ------------------------
 INSERT INTO mesas (numesa, capacidad) VALUES
-('Mesa 1', 4),
-('Mesa 2', 8),
+('Mesa 1', 2),
+('Mesa 2', 4),
 ('Mesa 3', 6),
-('Mesa 4', 12)
+('Mesa 4', 2),
+('Mesa 5', 4),
+('Mesa 6', 8),
+('Mesa 7', 6),
+('Mesa 8', 4),
+('Mesa 9', 6),
+('Mesa 10', 2),
+('Mesa 11', 2),
+('Mesa 12', 2),
+('Mesa 13', 2),
+('Mesa 14', 2)
 
 SELECT * FROM mesas
  -- ---------------------------
@@ -91,9 +101,9 @@ INSERT INTO estado_ordenes (estado) VALUES
 SELECT * FROM estado_ordenes
 
 -- --------------------------------------
- INSERT INTO ordenes (idmesa,idempleado,idestadoorden )VALUES
-('1','3','1'),
-('2','3','1')
+ INSERT INTO ordenes (idmesa,idempleado )VALUES
+('1','3'),
+('2','3')
 
 SELECT * FROM ordenes
  -- ---------------------------------

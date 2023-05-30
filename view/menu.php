@@ -11,8 +11,11 @@ session_start();
     <title>GUSTEAU'S</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
     <link rel="stylesheet" href="../style/index.style.css">
+
     <script src="https://kit.fontawesome.com/f676365a42.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -94,49 +97,56 @@ session_start();
             <div class="p-3 col-md-10 mt-3">
                 <!-- -- <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalId">Registrar Orden</button> -->
                 <a href="" class="btn btn-dark btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#modalId"><i
-                        class="fa-solid fa-money-bill-1-wave"></i> Registrar Orden</a>
-                <table id="tbmenu" class="table table-striped table-sm mt-3">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>N° Mesa</th>
-                            <th>Empleado</th>
-                            <th>FechaOrden</th>
-                            <th>Estado</th>
-                            <th>Operaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        class="fa-solid fa-money-bill-1-wave"></i> Registrar
+                </a>                                        
+                <div class="container-mesa " id="container-card">
 
-                    </tbody>
-                </table>
+                </div>
 
-                <!-- Modal Body -->
-                <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                <!-- Modal registrar -->                
                 <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
                     role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered " role="document">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalTitleId">Registar Orden</h5>
+                                <h5 class="modal-title" id="modalTitleId">Registar</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form action="" id="formProducts">
-                                    <div class="mb-3">
-                                        <label for="Mesa" class="form-label">Mesa</label>
-                                        <input type="text" class="form-control form-control-sm text-end" id="mesa">
+                                    <div class="mb-3">                                                                                 
+                                        <label for="mesa">Mesa</label>     
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="Empleado" class="form-label">Empleado</label>
-                                        <input type="text" class="form-control form-control-sm" id="empleado">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Estado" class="form-label">Estado</label>
-                                        <input type="text" class="form-control form-control-sm " id="estado">
-                                    </div>
+                                    <div class="input-group mb-3 ">
+                                        <div class="input-group">
+                                            <label for="carta" class="form-control">Carta</label>                                        
+                                            <select id="carta" class="form-control input-group-text"><option value="">Seleccione</option></select>
+                                        </div>
+                                        <div class="input-group mb-3 mt-3">  
+                                            <div class="input-group">
+                                                <input type="number"  class="form-control"placeholder="Cantidad">
+                                                <i type="button" class="btn btn-info form-control">registrar</i>
+                                            </div>                                          
+                                        </div>                                        
+                                    </div>                                    
+                                    <table class="table table-striped table-sm mt-2">
+                                        <thead>
+                                            <tr>
+                                                <th>Carta</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
                                 </form>
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-sm btn-info" id="modal-registrar">Registrar</button>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-secondary"
@@ -146,13 +156,14 @@ session_start();
                         </div>
                     </div>
                 </div>
+                <!-- fin Modal registrar -->
             </div>
         </div>
 
     </div>
-    <div class="modal fade" id="modal-automoviles" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="modal-actualizar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">Actualizar Pedido</h5>
@@ -195,16 +206,16 @@ session_start();
     document.addEventListener("DOMContentLoaded", () => {
 
 
-        const mesa = document.getElementById("mesa");
-        const empleado = document.getElementById("empleado");
+        const listmesa = document.querySelector("#mesa");
+        const listCarta = document.querySelector("#carta");
         const estado = document.getElementById("estado");
         const btGuardar = document.getElementById("registrar");
-        const tablaMenu = document.querySelector("#tbmenu");
-        const cuerpoTabla = tablaMenu.querySelector("tbody");
+        const cardMenu = document.querySelector("#container-card");
+        
 
         function renderData() {
             const parametros = new URLSearchParams();
-            parametros.append("operacion", "listarMenu");
+            parametros.append("operacion", "MostrarMesas");
 
             fetch("../controllers/Menu.controller.php", {
                     method: 'POST',
@@ -212,54 +223,96 @@ session_start();
                 })
                 .then(response => response.json())
                 .then(datos => {
-                    cuerpoTabla.innerHTML = ``;
+                    cardMenu.innerHTML = ``;
                     datos.forEach(element => {
-                        let fila = `
-              <tr>
-                <td>${element.idorden}</td>  
-                <td>${element.numesa}</td>
-                <td>${element.Empleado}</td>
-                <td>${element.fechahoraorden}</td>
-				<td>${element.estado}</td>									
-                <td>
-                  <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-trash"></i></a>
-                  <a href='#' class='editar' btn btn-info btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-pen-nib"></i></a>
-                </td>
-              </tr>
-              `;              
-                cuerpoTabla.innerHTML += fila;
+                        let fila = ` 
+                        <div class="card mt-3" id="card">      
+                            <div class="card-body">                    
+                                <div>                        
+                                    <h5>${element.numesa}</h5>                                       
+                                    <h6>Estado: ${element.estado}</h6>                       
+                                    <h7>Capacidad: ${element.capacidad} Personas</h7>
+                                    <hr>									
+                                    <td>
+                                    <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-trash"></i></a>
+                                    <a href='#' class='editar' data-bs-toggle="modal" data-bs-target="#modal-actualizar" btn btn-info btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-pen-nib"></i></a>
+                                    </td>
+                                </div>
+                            </div>
+                        </div>                       
+                        
+                `;              
+                cardMenu.innerHTML += fila;
                 })
                 
-            })
+            });
 
-            function registrarMenu() {
-                if (confirm("Esta seguro de Guardar La Orden")) {
-                    const parametros = new FormData();
-                    parametros.append("operacion", "RegistrarMenu");
-                    parametros.append("Mesa", mesa.value);
-                    parametros.append("Empleado", empleado.value);
-                    parametros.append("Estado", estado.value);
-                    fetch("../controllers/Menu.controller.php", {
-                        method: 'POST',
-                        body: parametros                        
-                    })  
-                        .then(response => response.json())
-                        .then(datos=>{
-                            if(datos.status){
-                                renderData();
-                                document.getElementById("formProducts").reset();
-                            }else{
-                                alert(datos.message);
-                            }
-                        });
-                }
-            }
-
-          btGuardar.addEventListener("click", registrarMenu);
+            
         }
+        function registrarMenu() {
+            if (confirm("Esta seguro de Guardar La Orden")) {
+                const parametros = new FormData();
+                parametros.append("operacion", "RegistrarMenu");
+                parametros.append("Mesa", mesa.value);
+                parametros.append("Empleado", empleado.value);
+                
+                fetch("../controllers/Menu.controller.php", {
+                    method: 'POST',
+                    body: parametros                        
+                })  
+                .then(response => response.json())
+                .then((datos)=>{
+                    if(datos.status){
+                        renderData();
+                        document.getElementById("formProducts").reset();
+                    }else{
+                        alert(datos.message);
+                    }
+                });
+            }
+        }        
+        /* function obtenerMesa(){                    
+            const parametros = new URLSearchParams();        
+            parametros.append("operacion", "ListarMesa");                    
+            fetch('../controllers/Menu.controller.php',{ 
+                method: 'POST',
+                body: parametros                
+            })                
+                .then(respuesta => respuesta.json())
+                .then(datos => {
+                    datos.forEach(element=>{
+                    const optionTag = document.createElement("input");
+                    optionTag.value = element.idmesa;                
+                   
+                    listmesa.appendChild(optionTag);                    
+                    });
+                })      
+        } */
+        function obtenerEmpleado(){
+            const parametros = new URLSearchParams();
+            parametros.append("operacion", "Listarcarta");
+            fetch("../controllers/Menu.controller.php",{
+                method: 'POST',
+                body: parametros
+            })
+                .then(res => res.json())
+                .then(datos =>{
+                    datos.forEach(element=>{
+                        const optiontag = document.createElement("option");
+                        optiontag.value = element.idproducto ;
+                        optiontag.text = element.nombreproducto;
+                        listCarta.appendChild(optiontag);
+                    });
+                });
+        }
+
+        
+        btGuardar.addEventListener("click", registrarMenu);
 
 
         renderData();
+        
+        obtenerEmpleado();
     });
     </script>
 </body>

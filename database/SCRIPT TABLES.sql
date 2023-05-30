@@ -1,10 +1,7 @@
-
+DROP DATABASE IF EXISTS proyecto_seminario ;
 CREATE DATABASE proyecto_seminario;
-
--- -------------------------------------------------------------------------------------
-
 USE proyecto_seminario;
--- ------------------------------------------------------------------------------------
+
 CREATE TABLE personas
 (
 	idpersona	INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,7 +15,7 @@ CREATE TABLE personas
 )
 ENGINE  = INNODB;
 
--- ------------------------------------------------------------------------------------
+
 CREATE TABLE empleados
 (
 idempleado			INT AUTO_INCREMENT PRIMARY KEY 	NOT NULL,
@@ -31,7 +28,7 @@ CONSTRAINT uk_idpersona_templeados UNIQUE (idpersona)
 )
 ENGINE = INNODB;
 
--- -------------------------------------------------------------------------------------
+
 CREATE TABLE usuarios
 (
 idusuario			INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,7 +41,7 @@ CONSTRAINT uk_usuario_tusuarios UNIQUE (nombreusuario, claveacceso)
 )
 ENGINE = INNODB;
 
--- --------------------------------------------------------------------------------------
+
 CREATE TABLE mesas
 (
 idmesa			INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,7 +50,7 @@ capacidad		INT 		NOT NULL
 )
 ENGINE = INNODB;
 
--- -----------------------------------------------------------------------------------------
+
 CREATE TABLE productos
 (
 idproducto			INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,30 +61,30 @@ categoria			VARCHAR(30)		NOT NULL
 )
 ENGINE = INNODB;
 
--- ---------------------------------------------------------------------------------------
+
 CREATE TABLE estado_ordenes
 (
 idestadoorden		INT AUTO_INCREMENT PRIMARY KEY,
 estado				VARCHAR(20)
 )
 ENGINE = INNODB;
--- ---------------------------------------------------------
+
 
 CREATE TABLE ordenes
 (
 idorden				INT AUTO_INCREMENT PRIMARY KEY,
 idmesa				INT 			NOT NULL,
-idempleado 			INT 			NOT NULL,
+idempleado 			INT 			NULL,
 fechahoraorden	 	DATETIME	 	DEFAULT NOW(),
 fechahoraentrega 	DATETIME 	NULL,
-idestadoorden		INT 	 		NOT NULL, 	-- pendiente, proceso, entregado
+idestadoorden		INT 	 		NOT NULL DEFAULT ('1'), 	-- pendiente, proceso, entregado
 CONSTRAINT fk_idmesa_tordenes FOREIGN KEY (idmesa) REFERENCES mesas (idmesa),
 CONSTRAINT fk_idempleado_Tordenes FOREIGN KEY (idempleado) REFERENCES empleados (idempleado),
 CONSTRAINT fk_idestadoorden_tordenes FOREIGN KEY (idestadoorden) REFERENCES estado_ordenes (idestadoorden)
 )
 ENGINE = INNODB;
 
--- ----------------------------------------------------------------------------------------
+
 CREATE TABLE pagos 
 (
 idpago			INT AUTO_INCREMENT PRIMARY KEY,
@@ -95,14 +92,14 @@ fechahorapago		DATETIME 	NOT NULL DEFAULT NOW(),
 totalpagar		DECIMAL(7,2)	NOT NULL
 )
 ENGINE = INNODB;
--- ------------------------------------
+
 CREATE TABLE DETALLE_ORDENES
 (
 iddetalle_orden		INT AUTO_INCREMENT PRIMARY KEY,
 idorden				INT 	NOT NULL,
 idcliente			INT 	NOT NULL,
 idproducto			INT 	NOT NULL,
-cantidad				INT 	NOT NULL,
+cantidad				DECIMAL(7,2) 	NOT NULL,
 idpago				INT   NOT NULL,
 CONSTRAINT fk_idorden_TdetalleOrden FOREIGN KEY (idorden) REFERENCES ordenes (idorden),
 CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
@@ -110,8 +107,5 @@ CONSTRAINT fk_idcliente_tordenes FOREIGN KEY (idcliente) REFERENCES personas (id
 CONSTRAINT fk_idpago_tdetalleOrden FOREIGN KEY(idpago) REFERENCES pagos (idpago)
 )
 ENGINE = INNODB;
--- ----------------------------
 
-
--- ------------------------------------------------------------------------------------------
 
