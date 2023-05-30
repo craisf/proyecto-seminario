@@ -38,27 +38,8 @@ END $$
 
 CALL spu_listar_ordenes()
 
-SELECT idempleado, CONCAT (personas.nombre,personas.apellido) AS 'empleados',nombrerol FROM empleados
-    INNER JOIN personas ON personas.idpersona = empleados.idpersona
-    
-UPDATE ordenes SET
-estado = 'EN proceso'
-WHERE idorden = 1
 
-
- INSERT INTO ordenes (idmesa,idempleado,idcliente,idestadoorden)VALUES
-('1', '3', '5', 'PENDIENTE'),
-('2', '3', '6', 'PENDIENTE')
-SELECT * FROM ordenes
-
-
-DELIMITER $$
-CREATE PROCEDURE spu_ordenes_registrar(IN _idmesa INT, IN _idempleado INT, IN _idcliente INT, IN _idestadoorden INT)
-BEGIN
-INSERT INTO ordenes (idmesa, idempleado, idcliente, idestadoorden)
-VALUES (_idmesa ,_idempleado,_idcliente ,_idestadoorden)
-END $$
-
+   
 DROP PROCEDURE spu_registrar
 
 DELIMITER $$
@@ -71,6 +52,7 @@ BEGIN
 INSERT INTO ordenes (idmesa, idempleado, idestadoorden)
 VALUES (_idmesa ,_idempleado,_idestadoorden);
 END $$
+SELECT * FROM ordenes
 
 CALL spu_registrar('2','3','1');
 

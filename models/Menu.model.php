@@ -21,24 +21,25 @@ class Menu extends Conexion{
   }
 
 
-  public function registrarMenu($datos = []){
+  public function RegistrarMenu($datos =[]){
     $respuesta = [
       "status" => false,
       "message" => ""
     ];
     try{
       $consulta = $this->conexion->prepare("CALL spu_registrar(?,?,?)");
-      $respuesta["false"] = $consulta->execute(
+      $respuesta ["status"]=$consulta->execute(
         array(
         $datos["idmesa"],
-        $datos["idempleado"],      
-        $datos["idestadoorden"]      
+        $datos["idempleado"],    
+        $datos["idestadoorden"]
         )
-      );      
-    }
+      ); 
+          
+    }     
     catch(Exception $e){
       die($e->getMessage());
-    }
-    return $respuesta;
+    }  
+    return $respuesta;    
   }
 }

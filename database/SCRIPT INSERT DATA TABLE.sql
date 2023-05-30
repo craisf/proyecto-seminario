@@ -80,6 +80,7 @@ INSERT INTO productos (nombreproducto,descripcion,precio,categoria) VALUES
           '13.99',
           'Japonesa'
         )
+        
         SELECT * FROM productos 
 -- ---------------------------------
 INSERT INTO estado_ordenes (estado) VALUES

@@ -19,9 +19,9 @@ if(isset($_POST['operacion'])){
     $datosGuardar = [      
       "idmesa"      => $_POST['idmesa'],
       "idempleado"  => $_POST['idempleado'],      
-      "idestado"    => $_POST['idestadoorden']
+      "idestadoorden"   => $_POST['idestadoorden']
     ];
-    $respuesta = $menu->registrarMenu($datosGuardar);
+    $respuesta = $menu->RegistrarMenu($datosGuardar);
     echo json_encode($respuesta);
 
   }
