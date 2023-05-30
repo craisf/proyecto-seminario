@@ -92,36 +92,21 @@ INSERT INTO productos (nombreproducto,descripcion,precio,categoria) VALUES
         )
         
         SELECT * FROM productos 
--- ---------------------------------
-INSERT INTO estado_ordenes (estado) VALUES
-('Pendiente'),
-('Proceso'), 
-('entregadado')
-
-SELECT * FROM estado_ordenes
-
 -- --------------------------------------
- INSERT INTO ordenes (idmesa,idempleado )VALUES
-('1','3'),
-('2','3')
+ INSERT INTO ordenes (idmesa )VALUES
+('1'),
+('2')
 
 SELECT * FROM ordenes
  -- ---------------------------------
- INSERT INTO pagos (fechahorapago,totalpagar)VALUES
-('2023-05-26','51.96'),
-('2023-05-26','119.92')
+INSERT INTO detalle_ordenes (idorden,idproducto, cantidad)
+VALUES
+('1', '1','2'),
+('2', '2','1')
 
 SELECT * FROM detalle_ordenes
--- ------------------------------
-INSERT INTO detalle_ordenes (idorden,idcliente, idproducto, cantidad, idpago)
-VALUES
-('1', '2', '2', '4','1'),
-('2', '3', '4','8','2')
 
 
 
 
 
-
-
-SELECT * FROM pagos
