@@ -115,18 +115,19 @@ session_start();
                             </div>
                             <div class="modal-body">
                                 <form action="" id="formProducts">
-                                    <div class="mb-3">                                                                                 
-                                        <label for="mesa">Mesa</label>     
+                                    <div class="row mb-3">                                                                                 
+                                        <label for="mesa" class="form-label">Mesa</label> 
                                     </div>
-                                    <div class="input-group mb-3 ">
-                                        <div class="input-group">
-                                            <label for="carta" class="form-control">Carta</label>                                        
-                                            <select id="carta" class="form-control input-group-text"><option value="">Seleccione</option></select>
+                                    <div class="row mb-3 ">
+                                        <div class="col-md-6">
+                                            <label for="carta" class="form-label">Carta</label>                                        
+                                            <select id="carta" class="form-select "><option value="">Seleccione</option></select>
                                         </div>
-                                        <div class="input-group mb-3 mt-3">  
-                                            <div class="input-group">
+                                        <div class="col-md-6">  
+                                            <label for="cantidad" class="form-label">Cantidad</label>
+                                            <div class="input-group ">                                                
                                                 <input type="number"  class="form-control"placeholder="Cantidad">
-                                                <i type="button" class="btn btn-info form-control">registrar</i>
+                                                <i type="button" class="btn btn-info ">registrar</i>
                                             </div>                                          
                                         </div>                                        
                                     </div>                                    
