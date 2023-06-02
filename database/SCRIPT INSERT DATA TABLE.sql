@@ -1,11 +1,11 @@
 -- ----------------------------------------------------------
-INSERT INTO personas (nombre, apellido, celular, correo, direccion, tipodoc, numerodoc)VALUES
-('Carlos ','Moran ','956321478','carlos@gmail.com','Santa Rosa','DNI','71594314'),
-('María','López ','912345678','maria.lopez@gmail.com','Calle 123, Ciudad Ejemplo','DNI','12345678'),
-('Juan','García ','998765432','juan.garcia@gmail.com',' Avenida Principal, Pueblo Nuevo','DNI','75369821'),
-('Ana','Rodríguez ','955556231','ana.rodriguez@gmail.com','Calle 456, Urbanización Bella Vista','DNI','98765432'),
-('Pedro','Martínez ','911561283','pedro.martinez@gmail.com','Avenida Libertad, Barrio Centro','DNI','87654321'),
-('Laura','Sánchez ','999005208','laura.sanchez@gmail.com','Calle 789, Colonia Esperanza','DNI','98765405')
+INSERT INTO personas (nombre, apellido, celular, correo, direccion, dni)VALUES
+('Carlos ','Moran ','956321478','carlos@gmail.com','Santa Rosa','71594314'),
+('María','López ','912345678','maria.lopez@gmail.com','Calle 123, Ciudad Ejemplo','12345678'),
+('Juan','García ','998765432','juan.garcia@gmail.com',' Avenida Principal, Pueblo Nuevo','75369821'),
+('Ana','Rodríguez ','955556231','ana.rodriguez@gmail.com','Calle 456, Urbanización Bella Vista','98765432'),
+('Pedro','Martínez ','911561283','pedro.martinez@gmail.com','Avenida Libertad, Barrio Centro','87654321'),
+('Laura','Sánchez ','999005208','laura.sanchez@gmail.com','Calle 789, Colonia Esperanza','98765405')
 
 SELECT * FROM personas
 
@@ -32,8 +32,7 @@ SELECT *  FROM usuarios
 UPDATE
 usuarios
 SET
-  claveacceso = '$2y$10$eb15pmRguuB3rfT6qxeAWunSPjgtOE2ldKlAiLozdbazAu5so6DYW'
-WHERE idusuario = '1' 
+  claveacceso = '$2y$10$eb15pmRguuB3rfT6qxeAWunSPjgtOE2ldKlAiLozdbazAu5so6DYW' 
 -- ------------------------
 INSERT INTO mesas (numesa, capacidad) VALUES
 ('Mesa 1', 2),
@@ -89,13 +88,21 @@ INSERT INTO productos (nombreproducto,descripcion,precio,categoria) VALUES
           'Un tazón de fideos ramen sumergidos en un caldo rico y cremoso de cerdo tonkotsu. Se sirve con rebanadas de cerdo chashu, huevo marinado, cebollas verdes y alga nori',
           '13.99',
           'Japonesa'
-        )
-        
+        ),       
+	('Pizza Hawaiana', 'Deliciosa pizza con jamón, piña y queso derretido', 12.99, 'Comidas rápidas'),
+	('Ensalada César', 'Ensalada fresca con lechuga, pollo a la parrilla, croutones y aderezo César', 8.99, 'Ensaladas'),
+	('Taco de carne asada', 'Tortilla de maíz rellena de tierna carne asada, cebolla y cilantro', 2.99, 'Comidas mexicanas'),
+	('Pasta Alfredo', 'Fetuccini en salsa cremosa de queso parmesano y mantequilla', 10.99, 'Pastas'),
+	('Sopa de pollo', 'Caliente y reconfortante sopa de pollo con verduras', 6.99, 'Sopas'),
+	('Burrito de pollo', 'Burrito grande relleno de pollo, arroz, frijoles y salsa', 7.99, 'Comidas mexicanas'),
+	('Lasagna de carne', 'Deliciosa lasaña casera con capas de pasta, carne molida y salsa de tomate', 14.99, 'Pastas'),
+	('Pollo al curry', 'Pollo tierno en una sabrosa salsa de curry con arroz', 13.99, 'Platos principales')
+	
         SELECT * FROM productos 
 -- --------------------------------------
- INSERT INTO ordenes (idmesa )VALUES
-('1'),
-('2')
+ INSERT INTO ordenes (idmesa,idempleado, idcliente,tipocomprobante,numcomprobante )VALUES
+('1','1','5','BS','BLS-00001'),
+('2',NULL,'5','','',)
 
 SELECT * FROM ordenes
  -- ---------------------------------

@@ -6,12 +6,12 @@ CREATE TABLE personas
 (
 	idpersona	INT AUTO_INCREMENT PRIMARY KEY,
 	nombre		VARCHAR(50)	NULL,
-	apellido		VARCHAR(40) NULL,
+	apellido		VARCHAR(50) NULL,
 	celular 		CHAR(9)		NULL,		
 	correo		VARCHAR(60)	NULL,	
-	direccion	VARCHAR(80)	NULL,
-	tipodoc		CHAR(20)		NULL DEFAULT 'DNI', -- D = DNI  
-	numerodoc	CHAR(12)		NULL
+	direccion	VARCHAR(80)	NULL, 
+	dni	CHAR(9)		NULL DEFAULT 'DNI',
+	CONSTRAINT uk_dni_tpersonas UNIQUE(dni)
 )
 ENGINE  = INNODB;
 
@@ -46,8 +46,10 @@ CREATE TABLE mesas
 (
 idmesa			INT AUTO_INCREMENT PRIMARY KEY,
 numesa			VARCHAR(20)		NOT NULL,
-capacidad		INT 		NOT NULL,
-estado			VARCHAR(20)	NULL DEFAULT ('DISPONIBLE') -- OCUPADO - DISPONIBLE  
+capacidad		TINYINT 		NOT NULL,
+estado			CHAR(1)	NULL DEFAULT 'D', -- OCUPADO - DISPONIBLE 
+CONSTRAINT uk_numesa_tmesas  UNIQUE(numesa),
+CONSTRAINT ck_estado_tmesas CHECK(estado  IN ('D','O'))
 )
 ENGINE = INNODB;
 
@@ -71,13 +73,16 @@ idempleado 			INT 			NULL,
 idcliente			INT 			NULL,
 fechahoraorden	 	DATETIME	 	DEFAULT NOW(),
 fechahorapago	 	DATETIME 	NULL,
-tipocomprobante	CHAR(2)		NULL, -- BS / BE
+tipocomprobante		CHAR(2)		NULL, -- BS / BE
 numcomprobante		CHAR(9)		NULL,
-estado 				CHAR(5)		NULL, -- PEN / ENT
 preciototal			DECIMAL(7,2) NULL,
+estado 				CHAR(2) DEFAULT 'PE' NULL , -- PE (pendiente)/ EN (entregado)
 CONSTRAINT fk_idmesa_tordenes FOREIGN KEY (idmesa) REFERENCES mesas (idmesa),
 CONSTRAINT fk_idempleado_Tordenes FOREIGN KEY (idempleado) REFERENCES empleados (idempleado),
-CONSTRAINT fk_idcliente_Tordenes FOREIGN KEY (idcliente) REFERENCES personas (idpersona)
+CONSTRAINT fk_idcliente_Tordenes FOREIGN KEY (idcliente) REFERENCES personas (idpersona),
+CONSTRAINT ck_tipocomprobante_tordenes CHECK(tipocomprobante IN('BS','BE')),
+CONSTRAINT ck_preciototal_tordenes CHECK(preciototal IN (preciototal >0)),
+CONSTRAINT ck_estado_tordenes CHECK(estado IN ('PE','EN'))
 )
 ENGINE = INNODB;
 
@@ -88,9 +93,10 @@ CREATE TABLE DETALLE_ORDENES
 iddetalle_orden	INT AUTO_INCREMENT PRIMARY KEY,
 idorden				INT 	NOT NULL,
 idproducto			INT 	NOT NULL,
-cantidad				INT 	NOT NULL,
+cantidad			INT 	NOT NULL,
 CONSTRAINT fk_idorden_TdetalleOrden FOREIGN KEY (idorden) REFERENCES ordenes (idorden),
-CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES productos (idproducto)
+CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES productos (idproducto),
+CONSTRAINT fk_cantidad_tdetalleOrden CHECK(cantidad >0)
 )
 ENGINE = INNODB;
 

@@ -19,6 +19,7 @@ session_start();
 </head>
 
 <body>
+    <!-- INICIO DASHBOARD -->
     <div class="container-fluid">
         <div class="row flex-nowrap">
             <div class="d-flex  flex-column justify-content-between col-auto bg-dark min-vh-100">
@@ -67,7 +68,6 @@ session_start();
                                 </li>
                             </ul>
                         </li>
-
                     </ul>
                 </div>
                 <div>
@@ -91,83 +91,110 @@ session_start();
 						<a class="btn border-none outline-none text-white " type="button" id="triggerId" href="../index.php">log in</a>';
 					}
 					?>
-
                 </div>
             </div>
             <div class="p-3 col-md-10 mt-3">
-                <!-- -- <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#modalId">Registrar Orden</button> -->
-                <a href="" class="btn btn-dark btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#modalId"><i
-                        class="fa-solid fa-money-bill-1-wave"></i> Registrar
-                </a>                                        
+                <a href="#" class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
+                    data-bs-target="#modal-orden"><i class="fa-solid fa-money-bill-1-wave"></i> Registrar
+                </a>
                 <div class="container-mesa " id="container-card">
-
                 </div>
-
-                <!-- Modal registrar -->                
-                <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-                    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalTitleId">Registar</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" id="formProducts">
-                                    <div class="row mb-3">                                                                                 
-                                        <label for="mesa" class="form-label">Mesa</label> 
-                                    </div>
-                                    <div class="row mb-3 ">
-                                        <div class="col-md-6">
-                                            <label for="carta" class="form-label">Carta</label>                                        
-                                            <select id="carta" class="form-select "><option value="">Seleccione</option></select>
-                                        </div>
-                                        <div class="col-md-6">  
-                                            <label for="cantidad" class="form-label">Cantidad</label>
-                                            <div class="input-group ">                                                
-                                                <input type="number"  class="form-control"placeholder="Cantidad">
-                                                <i type="button" class="btn btn-info ">registrar</i>
-                                            </div>                                          
-                                        </div>                                        
-                                    </div>                                    
-                                    <table class="table table-striped table-sm mt-2">
-                                        <thead>
-                                            <tr>
-                                                <th>Carta</th>
-                                                <th>Cantidad</th>
-                                                <th>Precio</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table>
-                                </form>
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-sm btn-info" id="modal-registrar">Registrar</button>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-secondary"
-                                    data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-sm btn-info" id="registrar">Registrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- fin Modal registrar -->
             </div>
         </div>
-
     </div>
-    <div class="modal fade" id="modal-actualizar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    <!-- FIN DASHBOARD -->
+
+    <!-- Modal registrar nueva orden -->
+    <div class="modal fade" id="modal-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered " role="document">
+
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">Actualizar Pedido</h5>
+                    <h1 class="modal-title" id="modalTitleId">Registar</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" autocomplete="off" id="form-orden-nueva">
+                        <div class="row mb-5 d-flex justify-content-between">
+                            <div class="col-md-5mb-1">
+                                <div>
+                                    <span class="col-form-label fw-semibold">Fecha <span
+                                            class="fw-normal"><?php echo date('d/m/Y');?></span></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="md-mesa" class="col-form-label ">Mesa</label>
+                                <input type="text" class="form-control" id="md-mesa" readonly>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="md-empleados" class="col-form-label">Empleados</label>
+                                <select id="md-empleados" type="text" class="form-select">
+                                    <option value="">Seleccione</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2 mb-5">
+                            <div class="col-md-6">
+                                <label for="md-producto" class="form-label">Producto</label>
+                                <select id="md-producto" class="form-select ">
+                                    <option value="">Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="md-cantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="md-cantidad" value="1">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="md-precio" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="md-precio" readonly>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                <label for="md-importe" class="form-label">total</label>
+                                <input type="number" class="form-control" id="md-importe" readonly>
+                            </div>
+                            <div class="col-md-1 align-self-end ">
+                                <button type="button" class="btn btn-outline-secondary" id="md-agregar-producto"><i class="fa-solid fa-circle-plus"></i></button>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-sm mt-2 mb-5" id="md-tabla-datalle-orden">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+                        <div class="row justify-content-end mb-1">
+                            <label for="md-total" class="col form-label col-sm-1">Total:</label>
+                            <div class="col-sm-2">
+                                <input type="md-total" type="tetx" class="form-control text-end" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-sm btn-info" id="registrar">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin modal  -->
+    
+    <!-- fin Modal registrar -->
+    <div class="modal fade" id="modal-detalle-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">Detalle Orden</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -203,7 +230,8 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
     </script>
-    <script>
+    <script src="../js/Orden.js"></script>
+    <!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
 
 
@@ -216,9 +244,9 @@ session_start();
 
         function renderData() {
             const parametros = new URLSearchParams();
-            parametros.append("operacion", "MostrarMesas");
+            parametros.append("operacion", "listar");
 
-            fetch("../controllers/Menu.controller.php", {
+            fetch("../controllers/Mesa.controller.php", {
                     method: 'POST',
                     body: parametros
                 })
@@ -315,7 +343,7 @@ session_start();
         
         obtenerEmpleado();
     });
-    </script>
+    </script> -->
 </body>
 
 </html>

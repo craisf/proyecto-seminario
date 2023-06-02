@@ -1,14 +1,14 @@
 <?php
-require_once '../models/Menu.model.php';
+require_once '../models/Orden.model.php';
 
 
 if(isset($_POST['operacion'])){
   
-  $menu = new Menu();
+  $orden = new Orden();
 
 
-  if($_POST["operacion"] == 'MostrarMesas'){
-    echo json_encode($menu->mostrarMesas());
+  if($_POST["operacion"] == 'listar'){
+    echo json_encode($orden->listar());
     /* $datos = $menu->ListarMenu();
     if ($datos){
       echo json_encode($datos);

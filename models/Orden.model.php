@@ -1,7 +1,7 @@
 <?php
 require_once 'conexion.php';
 
-class Menu extends Conexion{
+class Orden extends Conexion{
   private $conexion;
 
   public function __CONSTRUCT(){
@@ -9,9 +9,9 @@ class Menu extends Conexion{
   }
 
 
-  public function mostrarMesas(){
+  public function listar(){
     try{
-      $consulta = $this->conexion->prepare("CALL spu_listar_mesas()");
+      $consulta = $this->conexion->prepare("CALL spu_listar_ordenes()");
       $consulta->execute();
       return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -42,26 +42,5 @@ class Menu extends Conexion{
     return $respuesta;    
   }
 
-  public function listarMesas(){
-    try{
-      $consulta = $this->conexion->prepare("SELECT * FROM mesas");
-      $consulta->execute();
-      return $consulta->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch(Exceptio $e){
-      die($e->getMessage());
-    }
-  }
-
-  public function listarCarta(){
-    try{
-      $consulta = $this->conexion->prepare("SELECT * FROM productos");
-      $consulta->execute();
-      return $consulta->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch(Exceptio $e){
-      die($e->getMessage());
-    }
-  }
 
 }
