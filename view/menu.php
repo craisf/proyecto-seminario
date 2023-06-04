@@ -95,8 +95,15 @@ session_start();
             </div>
             <div class="p-3 col-md-10 mt-3">
                 <a href="#" class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
-                    data-bs-target="#modal-orden"><i class="fa-solid fa-money-bill-1-wave"></i> Registrar
+                    data-bs-target="#modal-detalle-orden"><i class="fa-solid fa-money-bill-1-wave"></i> Registrar
                 </a>
+                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                    data-bs-target="#modal-producto-agregar">
+                    Launch
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
+                    Launch
+                </button>
                 <div class="container-mesa " id="container-card">
                 </div>
             </div>
@@ -104,7 +111,7 @@ session_start();
     </div>
     <!-- FIN DASHBOARD -->
 
-    <!-- Modal registrar nueva orden -->
+    <!-- Modal  nueva orden -->
     <div class="modal fade" id="modal-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
 
@@ -150,11 +157,12 @@ session_start();
                                 <input type="number" class="form-control" id="md-precio" readonly>
                             </div>
                             <div class="col-md-3 mt-3">
-                                <label for="md-importe" class="form-label">total</label>
-                                <input type="number" class="form-control" id="md-importe" readonly>
+                                <label for="md-total" class="form-label">total</label>
+                                <input type="number" class="form-control" id="md-total" readonly>
                             </div>
                             <div class="col-md-1 align-self-end ">
-                                <button type="button" class="btn btn-outline-secondary" id="md-agregar-producto"><i class="fa-solid fa-circle-plus"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" id="md-producto-agregar"><i
+                                        class="fa-solid fa-circle-plus"></i></button>
                             </div>
                         </div>
                         <table class="table table-striped table-sm mt-2 mb-5" id="md-tabla-datalle-orden">
@@ -188,162 +196,147 @@ session_start();
         </div>
     </div>
     <!-- Fin modal  -->
-    
-    <!-- fin Modal registrar -->
-    <div class="modal fade" id="modal-detalle-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+
+
+    <!-- INICIO MODAL DETALLE-->
+    <div class="modal fade" id="modal-detalle-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg " role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">Detalle Orden</h5>
+                    <h1 class="modal-title" id="modalTitleId">Detalle Orden</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="md-Marca" class="form-label">Cliente</label>
-                        <input type="text" class="form-control form-control-sm" id="md-cliente">
+                    <div class="row  justify-content">
+                        <div class="col-md-4">
+                            <label class="col-form-label">Hora y fecha</label>
+                            <input type="text" class="form-control" id="md-dt-fecha" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" row mb-3">
+                        <div class="col-md-6">
+                            <label class="col-form-label ">Mesa </label>
+                            <input type="text" class="form-control" id="md-dt-mesa" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-form-label">Empleado</label>
+                            <input type="text" id="md-dt-empleado" class="form-control" readonly>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label for="md-modelo" class="form-label">Producto</label>
-                        <input type="text" class="form-control form-control-sm" id="md-producto">
-                    </div>
-                    <div class="mb-3">
-                        <label for="md-precio" class="form-label">Mesa</label>
-                        <input type="text" class="form-control form-control-sm text-end" id="md-precio">
-                    </div>
-                    <div class="mb-3">
-                        <label for="md-tipoCombustible" class="form-label">Empleado</label>
-                        <input type="text" class="form-control form-control-sm" id="md-tipoCombustible">
-                    </div>
-                    <div class="mb-3">
-                        <label for="md-color" class="form-label">Estado</label>
-                        <input type="text" class="form-control form-control-sm " id="md-color">
+                        <table class="table table-striped table-sm mt-2 mb-5" id="md-dt-tabla-datalle-orden">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                        <div class="row justify-content-end mb-1">
+                            <label for="md-dt-total" class="col form-label col-sm-1">Total:</label>
+                            <div class="col-sm-2">
+                                <input id="md-dt-total" type="text" class="form-control text-end" readonly>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="actualizar">Actualizar</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- FIN MODAL -->
+
+
+    <!-- Inicio modal-agproducto -->
+    <div class="modal fade" id="modal-producto-agregar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="modalTitleId">Agregar</h1>
+                </div>
+                <div class="modal-body">
+                    <form action="" autocomplete="off" class="container" id="md-agproducto">
+                        <div class="row mb-1">
+                            <label for="ag-producto" class="form-label">Producto</label>
+                            <select name="" id="ag-producto" class="form-select">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <label for="ag-cantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="ag-cantidad" value="1">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ag-precio" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="ag-precio" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ag-total" class="form-label">total</label>
+                                <input type="number" class="form-control" id="ag-total" readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="ag-agregar">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+
+    <!-- Modal trigger button -->
+
+
+    <!-- Modal Body -->    
+    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Body
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+                
+
+    <!-- Optional: Place to the bottom of scripts -->
+    <script>
+    const myModal1 = new bootstrap.Modal(document.getElementById('modalId'), options)
+    </script>
+
+    <!-- Optional: Place to the bottom of scripts -->
+    <script>
+    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
     </script>
     <script src="../js/Orden.js"></script>
-    <!-- <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-
-        const listmesa = document.querySelector("#mesa");
-        const listCarta = document.querySelector("#carta");
-        const estado = document.getElementById("estado");
-        const btGuardar = document.getElementById("registrar");
-        const cardMenu = document.querySelector("#container-card");
-        
-
-        function renderData() {
-            const parametros = new URLSearchParams();
-            parametros.append("operacion", "listar");
-
-            fetch("../controllers/Mesa.controller.php", {
-                    method: 'POST',
-                    body: parametros
-                })
-                .then(response => response.json())
-                .then(datos => {
-                    cardMenu.innerHTML = ``;
-                    datos.forEach(element => {
-                        let fila = ` 
-                        <div class="card mt-3" id="card">      
-                            <div class="card-body">                    
-                                <div>                        
-                                    <h5>${element.numesa}</h5>                                       
-                                    <h6>Estado: ${element.estado}</h6>                       
-                                    <h7>Capacidad: ${element.capacidad} Personas</h7>
-                                    <hr>									
-                                    <td>
-                                    <a href='#' class='eliminar' btn btn-danger btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-trash"></i></a>
-                                    <a href='#' class='editar' data-bs-toggle="modal" data-bs-target="#modal-actualizar" btn btn-info btn-sm' data-idorden='${element.idorden}'><i class="fa-solid fa-pen-nib"></i></a>
-                                    </td>
-                                </div>
-                            </div>
-                        </div>                       
-                        
-                `;              
-                cardMenu.innerHTML += fila;
-                })
-                
-            });
-
-            
-        }
-        function registrarMenu() {
-            if (confirm("Esta seguro de Guardar La Orden")) {
-                const parametros = new FormData();
-                parametros.append("operacion", "RegistrarMenu");
-                parametros.append("Mesa", mesa.value);
-                parametros.append("Empleado", empleado.value);
-                
-                fetch("../controllers/Menu.controller.php", {
-                    method: 'POST',
-                    body: parametros                        
-                })  
-                .then(response => response.json())
-                .then((datos)=>{
-                    if(datos.status){
-                        renderData();
-                        document.getElementById("formProducts").reset();
-                    }else{
-                        alert(datos.message);
-                    }
-                });
-            }
-        }        
-        /* function obtenerMesa(){                    
-            const parametros = new URLSearchParams();        
-            parametros.append("operacion", "ListarMesa");                    
-            fetch('../controllers/Menu.controller.php',{ 
-                method: 'POST',
-                body: parametros                
-            })                
-                .then(respuesta => respuesta.json())
-                .then(datos => {
-                    datos.forEach(element=>{
-                    const optionTag = document.createElement("input");
-                    optionTag.value = element.idmesa;                
-                   
-                    listmesa.appendChild(optionTag);                    
-                    });
-                })      
-        } */
-        function obtenerEmpleado(){
-            const parametros = new URLSearchParams();
-            parametros.append("operacion", "Listarcarta");
-            fetch("../controllers/Menu.controller.php",{
-                method: 'POST',
-                body: parametros
-            })
-                .then(res => res.json())
-                .then(datos =>{
-                    datos.forEach(element=>{
-                        const optiontag = document.createElement("option");
-                        optiontag.value = element.idproducto ;
-                        optiontag.text = element.nombreproducto;
-                        listCarta.appendChild(optiontag);
-                    });
-                });
-        }
-
-        
-        btGuardar.addEventListener("click", registrarMenu);
-
-
-        renderData();
-        
-        obtenerEmpleado();
-    });
-    </script> -->
 </body>
 
 </html>

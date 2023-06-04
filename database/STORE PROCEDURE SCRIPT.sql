@@ -58,7 +58,17 @@ SELECT ordenes.idorden,
 END $$
 
 CALL spu_ordenes_buscar(1)
--- -----------------------------------------------------
+-- ----------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE spu_ventaxmesa( IN _idmesa INT)
+BEGIN
+SELECT ordenes.`idorden`FROM ordenes
+LEFT JOIN mesas ON mesas.idmesa = ordenes.`idmesa`
+WHERE ordenes.`estado` ='PE' AND mesas.idmesa = _idmesa;
+END $$
+
+CALL spu_ventaxmesa('1');
+-- --------------------------------------------------- 
 DELIMITER $$
 CREATE PROCEDURE spu_registrar_orden(
 IN _idmesa		TINYINT, 
@@ -70,14 +80,36 @@ END $$
 
 -- ----------------------------------------------------
 DELIMITER $$
-CREATE PROCEDURE spu_registar_detalle_orden
-(
-IN _idorden 
-IN _cantida
-IN)
+CREATE PROCEDURE spu_registar_detalle_orden(
+IN _idproducto INT,
+IN _cantidad INT
+)
 BEGIN
+SET @ultima_orden_id = (SELECT MAX(idorden)  AS 'id'FROM ordenes);
+INSERT INTO detalle_ordenes (idorden,idproducto,cantidad) VALUES
+(@ultima_orden_id, _idproducto, _cantidad);
 END $$
-SELECT * FROM detalle_ordenes
+
+
+-- ----------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE spu_detalle_orden
+(
+IN _idorden INT,
+IN _idmesa INT)
+BEGIN
+SELECT detalle_ordenes.`iddetalle_orden`,
+	productos.nombreproducto,
+	detalle_ordenes.`cantidad`,
+	productos.precio,
+	detalle_ordenes.`cantidad` * productos.precio 'Importe'
+	 FROM detalle_ordenes
+LEFT JOIN ordenes ON ordenes.idorden = detalle_ordenes.idorden
+LEFT JOIN productos ON productos.idproducto = detalle_ordenes.idproducto
+WHERE detalle_ordenes.`idorden` = _idorden AND ordenes.`idmesa` = _idmesa;
+END $$
+
+CALL spu_detalle_orden ('1','1');
 -- -----------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_mesas()
@@ -87,6 +119,16 @@ END $$
 
 CALL spu_listar_mesas();
 
+
+DELIMITER $$
+CREATE PROCEDURE spu_canbiarestado(
+IN _idmesa INT ,
+IN _estado CHAR(1))
+BEGIN 
+UPDATE mesas SET
+estado = _estado
+	WHERE idmesa =_idmesa;
+END $$
 -- -----------------------------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_empleados()
@@ -99,6 +141,15 @@ END $$
 
 CALL spu_listar_empleados();
 -- -----------------------------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE spu_listar_productos()
+BEGIN
+SELECT idproducto,nombreproducto, precio 
+	FROM productos
+	ORDER BY nombreproducto;
+END $$
+CALL spu_listar_productos();
+-- ---------------------------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_insertar_ordenes()
 BEGIN 

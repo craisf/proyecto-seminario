@@ -15,14 +15,33 @@ if(isset($_POST['operacion'])){
     } */
   }
 
-  if($_POST['operacion'] == 'registrarMenu'){
-    $datosGuardar = [      
-      "idmesa"      => $_POST['idmesa'],
-      "idempleado"  => $_POST['idempleado'],      
+  if($_POST['operacion'] == 'registrarOrden'){
+    $datos =[
+      "idmesa"  => $_POST["idmesa"],
+      "idempleado" => $_POST["idempleado"]
     ];
-    $respuesta = $menu->RegistrarMenu($datosGuardar);
-    echo json_encode($respuesta);
+    $resultado = $orden->registrarOrden($datos);
+    echo json_encode($resultado);
 
+  }
+
+  if($_POST['operacion'] == 'buscarOrden'){
+    $datos = $orden->buscar($_POST['idorden']);
+    echo json_encode($datos);
+  }
+
+  if($_POST['operacion'] == 'VentaxMesa'){
+    $datos = $orden->ventaxmesa($_POST['idmesa']);
+    echo json_encode($datos);
+  }
+  
+  if($_POST['operacion'] == 'DetalleOrden'){
+    $datos =[
+      "idorden"  => $_POST["idorden"],
+      "idmesa"  => $_POST["idmesa"],
+    ];
+    $resultado = $orden->detalle_orden($datos);
+    echo json_encode($resultado);
   }
 
   if($_POST['operacion']== 'ListarMesa'){
@@ -38,4 +57,14 @@ if(isset($_POST['operacion'])){
       echo json_encode($datos);
     }
   }
+
+  if($_POST['operacion'] == 'registrardetalleorden'){
+    $datos=[
+      "idproducto" => $_POST["idproducto"],
+      "cantidad" => $_POST["cantidad"]
+    ];
+    $resultado = $orden->RegistrarDetalleOrden($datos);
+    echo json_encode($resultado);
+  }
+  
 }

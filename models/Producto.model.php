@@ -5,7 +5,7 @@ class Producto extends Conexion{
     private $conexion;
 
     public function __CONSTRUCT(){
-        $this->conexion= parent::getConexion();
+        $this->conexion = parent::getConexion();
     }
     public function listarProductos(){
         try{

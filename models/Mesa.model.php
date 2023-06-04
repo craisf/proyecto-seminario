@@ -17,4 +17,23 @@ class Mesa extends Conexion{
         }
     }
 
+    public function cambiarestadomesa($datos=[]){
+        $respuesta =[
+            "status" => false,
+            "message" => ""
+        ];
+        try{
+            $consulta = $this->conexion->prepare("CALL spu_canbiarestado(?,?)");
+            $respuesta["status"] = $consulta->execute(array(
+                $datos["idmesa"],
+                $datos["estado"]
+            ));
+            $respuesta["message"] = ($respuesta["status"]) ? "CAMBIO HECHO" : "ERROR";
+            return $respuesta;
+        }catch(Exception $e){
+            die($e->getMessage());
+
+        }
+    }
+
 }
