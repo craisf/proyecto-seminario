@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                                 const parametro = new URLSearchParams();
                                 parametro.append("operacion", "registrardetalleorden");
                                 parametro.append("idproducto",element.dataset.idproducto);
-                                parametro.append("cantidad", element.cells[2].textContent);
+                                parametro.append("cantidad", parseInt(element.cells[2].textContent));
                                 fetch("../controllers/Orden.controller.php",{
                                     method: 'POST',
                                     body: parametro
