@@ -58,6 +58,7 @@ SELECT ordenes.idorden,
 END $$
 
 CALL spu_ordenes_buscar(1)
+SELECT* FROM ordenes
 -- ----------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_ventaxmesa( IN _idmesa INT)
@@ -112,6 +113,28 @@ END $$
 CALL spu_detalle_orden ('1','1');
 -- -----------------------------------
 DELIMITER $$
+CREATE PROCEDURE spu_detalle_orden_registrar(
+IN _idorden INT,
+IN _idproducto INT,
+IN _cantidad INT
+)
+BEGIN
+	 DECLARE producto_existe INT;
+	 SELECT COUNT(*) producto_existe FROM detalle_ordenes WHERE idorden = _idorden AND idproducto = _idproducto;
+	 
+	 IF producto_existe >0 THEN 
+		UPDATE detalle_ordenes SET
+		cantidad = cantidad + _cantidad
+		WHERE idorden = _idorden AND idproducto = _idproducto;
+	 ELSE
+		INSERT INTO detalle_ordenes(idorden,idproducto, cantidad) VALUES
+		(_idorden, _idproducto, _cantidad);
+	 END IF;
+END $$
+
+SELECT * FROM `detalle_ordenes`
+-- ---------------------------------------
+DELIMITER $$
 CREATE PROCEDURE spu_listar_mesas()
 BEGIN
 SELECT* FROM mesas;    
@@ -129,6 +152,9 @@ UPDATE mesas SET
 estado = _estado
 	WHERE idmesa =_idmesa;
 END $$
+
+SELECT * FROM mesas
+CALL spu_canbiarestado('1','O');
 -- -----------------------------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_empleados()
@@ -148,6 +174,7 @@ SELECT idproducto,nombreproducto, precio
 	FROM productos
 	ORDER BY nombreproducto;
 END $$
+
 CALL spu_listar_productos();
 -- ---------------------------------------------------------------------------
 DELIMITER $$
@@ -157,12 +184,6 @@ INSERT INTO ordenes (idmesa,idempleado,estado,)
 
 END $$
 
-
-
-SELECT nombreproducto, descripcion, precio FROM productos
-SELECT * FROM detalle_ordenes
-
-SELECT * FROM mesas
 
 
 -- que me registre en la tabla ordenes dependiendo de la mesa Y que a su ves en la tabla mesas cambie el estado  a 'OCUPADO', Y me registre esa orden en la tabla detalle_ordenes  

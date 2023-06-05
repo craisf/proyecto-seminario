@@ -112,13 +112,13 @@ session_start();
     <!-- FIN DASHBOARD -->
 
     <!-- Modal  nueva orden -->
-    <div class="modal fade" id="modal-orden" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="modal-orden-nueva" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
 
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title" id="modalTitleId">Registar</h1>
+                    <h1 class="modal-title" id="modalTitleId">Nueva Orden</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -161,11 +161,11 @@ session_start();
                                 <input type="number" class="form-control" id="md-total" readonly>
                             </div>
                             <div class="col-md-1 align-self-end ">
-                                <button type="button" class="btn btn-outline-secondary" id="md-producto-agregar"><i
+                                <button type="button" class="btn btn-outline-secondary " id="md-producto-agregar"><i
                                         class="fa-solid fa-circle-plus"></i></button>
                             </div>
                         </div>
-                        <table class="table table-striped table-sm mt-2 mb-5" id="md-tabla-datalle-orden">
+                        <table class="table table-striped table-sm mt-2 mb-5" id="md-tabla-datalle">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -226,7 +226,7 @@ session_start();
                         </div>
                     </div>
                     <div class="mb-3">
-                        <table class="table table-striped table-sm mt-2 mb-5" id="md-dt-tabla-datalle-orden">
+                        <table class="table table-striped table-sm mt-2 mb-5" id="dt-tabla-datalle">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -302,7 +302,7 @@ session_start();
 
 
     <!-- Modal Body -->    
-    <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+    <div class="modal fade" id="modal-cambiar-estado" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
         aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
@@ -323,16 +323,7 @@ session_start();
     <!-- FIN MODAL -->
                 
 
-    <!-- Optional: Place to the bottom of scripts -->
-    <script>
-    const myModal1 = new bootstrap.Modal(document.getElementById('modalId'), options)
-    </script>
-
-    <!-- Optional: Place to the bottom of scripts -->
-    <script>
-    const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
-    </script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
     </script>
