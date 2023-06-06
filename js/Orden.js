@@ -99,6 +99,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 idmesa = card.dataset.idmesa              
                 MDAgproducto.toggle();
             }
+        }
+        if(
+            e.target.classList.contains("pagar") ||
+            e.target.parentElement.classList.contains("pagar")
+        ){
+            if(card.dataset.status === 'O'){
+                idmesa = card.dataset.idmesa
+                MDCambiar.toggle();
+            }
         }        
     }) 
 

@@ -192,94 +192,98 @@ END $$
 
 CALL spu_listar_productos();
 -- ---------------------------------------------------------------------------
-DELIMITER $$
-CREATE PROCEDURE spu_insertar_ordenes()
-BEGIN 
-INSERT INTO ordenes (idmesa,idempleado,estado,)
 
+-- ----------------------------------------------------------------------------
+-- GRAFICOS
+
+DELIMITER $$
+CREATE PROCEDURE spu_grafico()
+BEGIN 
+SELECT productos.`categoria`, SUM(detalle_ordenes.`cantidad`) AS 'cantidad'
+FROM ordenes
+INNER JOIN detalle_ordenes  ON detalle_ordenes.`idorden` = ordenes.`idorden`
+INNER JOIN productos ON productos.`idproducto` = productos.idproducto
+GROUP BY productos.`categoria`;
 END $$
 
+SELECT * FROM ordenes
+SELECT* FROM detalle_ordenes
+SELECT * FROM productos
 
 
--- que me registre en la tabla ordenes dependiendo de la mesa Y que a su ves en la tabla mesas cambie el estado  a 'OCUPADO', Y me registre esa orden en la tabla detalle_ordenes  
 
-DELIMITER //
+-- -----------------------------------------------------------------
+-- CRUD PRODUCTOS
 
 
-CREATE PROCEDURE RegistrarOrden(
-  IN mesa_id INT,  
-  IN productos_ids VARCHAR(255),
-  IN cantidades VARCHAR(255)
+DELIMITER $$
+CREATE PROCEDURE spu_producto_listar()
+BEGIN
+    SELECT * FROM productos;
+END $$
+DELIMITER ;
+
+CALL spu_producto_listar()
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_producto_registrar(
+    IN _nombreproducto VARCHAR(80),
+    IN _descripcion VARCHAR(500),
+    IN _precio DECIMAL(7,2),
+    IN _categoria VARCHAR(30)
 )
 BEGIN
-  DECLARE orden_id INT;
-
-  -- Insertar registro de la orden
-  INSERT INTO ordenes (idmesa, estado)
-  VALUES (mesa_id, 'PEN');
-
-  -- Obtener el ID de la orden recién insertada
-  SET orden_id = LAST_INSERT_ID();
-
-  -- Actualizar el estado de la mesa a 'OCUPADO'
-  UPDATE mesas SET estado = 'OCUPADO' WHERE idmesa = mesa_id;
-
-  -- Separar los IDs de los productos y las cantidades
-  SET @productos_ids = productos_ids;
-  SET @cantidades = cantidades;
-
-  WHILE CHAR_LENGTH(@productos_ids) > 0 DO
-    SET @pos = LOCATE(',', @productos_ids);
-    SET @producto_id = IF(@pos > 0, SUBSTRING(@productos_ids, 1, @pos - 1), @productos_ids);
-    SET @productos_ids = IF(@pos > 0, SUBSTRING(@productos_ids, @pos + 1), '');
-
-    SET @pos = LOCATE(',', @cantidades);
-    SET @cantidad = IF(@pos > 0, SUBSTRING(@cantidades, 1, @pos - 1), @cantidades);
-    SET @cantidades = IF(@pos > 0, SUBSTRING(@cantidades, @pos + 1), '');
-
-    -- Insertar detalles de la orden
-    INSERT INTO detalle_ordenes (idorden, idproducto, cantidad)
-    VALUES (orden_id, @producto_id, @cantidad);
-  END WHILE;
-END //
-
+    INSERT INTO productos (nombreproducto, descripcion, precio, categoria)
+    VALUES (_nombreproducto, _descripcion, _precio, _categoria);
+END $$
 DELIMITER ;
 
 
-CALL RegistrarOrden('2', '4,5,1', '2,1,3');
-
-SELECT * FROM ordenes
--- -------------------------------------------------------------------
-
-
-
-SELECT * FROM detalle_ordenes
-
-INSERT INTO ordenes (idmesa) VALUES ('3')
-SELECT * FROM detalle_ordenes
-SELECT * FROM pagos
-SELECT * FROM productos
-SELECT * FROM mesas
-INSERT INTO detalle_ordenes(idorden, idcliente, idproducto, cantidad,idpago) VALUES('3','4','5','3','1')
+DELIMITER $$
+CREATE PROCEDURE spu_producto_eliminar(
+    IN _idproducto INT
+)
+BEGIN
+    DELETE FROM productos WHERE idproducto = _idproducto;
+END $$
+DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE listar_empleados()
+CREATE PROCEDURE spu_producto_obt(
+    IN _idproducto INT
+)
 BEGIN
-SELECT personas.`nombre`, personas.`apellido`FROM empleados
-INNER JOIN personas ON personas.idpersona = empleados.`idpersona`;
+    SELECT * FROM productos WHERE idproducto = _idproducto;
 END $$
+DELIMITER ;
+
+CALL spu_producto_obt('2');
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_producto_actualizar(
+    IN _idproducto INT,
+    IN _nombreproducto VARCHAR(80),
+    IN _descripcion VARCHAR(500),
+    IN _precio DECIMAL(7,2),
+    IN _categoria VARCHAR(30)
+)
+BEGIN
+    UPDATE productos
+    SET nombreproducto = _nombreproducto,
+        descripcion = _descripcion,
+        precio = _precio,
+        categoria = _categoria
+    WHERE idproducto = _idproducto;
+END $$
+DELIMITER ;
 
 
 
 
-DROP PROCEDURE spu_registrar
 
-
-
-
-
-
-
+CALL spu_producto_eliminar('26')
 
 
 

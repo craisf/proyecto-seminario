@@ -48,7 +48,14 @@ INSERT INTO mesas (numesa, capacidad) VALUES
 ('Mesa 11', 2),
 ('Mesa 12', 2),
 ('Mesa 13', 2),
-('Mesa 14', 2)
+('Mesa 14', 2),
+('Mesa 15', 2),
+('Mesa 16', 2),
+('Mesa 17', 2),
+('Mesa 18', 2),
+('Mesa 19', 2),
+('Mesa 20', 2)
+
 
 SELECT * FROM mesas
  -- ---------------------------
@@ -98,7 +105,7 @@ INSERT INTO productos (nombreproducto,descripcion,precio,categoria) VALUES
 	('Lasagna de carne', 'Deliciosa lasaña casera con capas de pasta, carne molida y salsa de tomate', 14.99, 'Pastas'),
 	('Pollo al curry', 'Pollo tierno en una sabrosa salsa de curry con arroz', 13.99, 'Platos principales')
 	
-        SELECT * FROM productos 
+        SELECT * FROM productos        
 -- --------------------------------------
  INSERT INTO ordenes (idmesa,idempleado, idcliente,tipocomprobante,numcomprobante )VALUES
 ('1','1','5','BS','BLS-00001'),
