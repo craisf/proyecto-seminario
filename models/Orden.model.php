@@ -60,7 +60,7 @@ class Orden extends Conexion{
       "message" => ""
     ];
     try{
-      $consulta = $this->conexion->prepare("CALL spu_registrar_orden?,?)");
+      $consulta = $this->conexion->prepare("CALL spu_registrar_orden(?,?)");
       $respuesta ["status"]=$consulta->execute(
         array(
         $datos["idmesa"],
@@ -72,8 +72,7 @@ class Orden extends Conexion{
     }     
     catch(Exception $e){
       die($e->getMessage());
-    }  
-    
+    }      
   }
 
   public function RegistrarDetalleOrden($datos=[]){
@@ -85,7 +84,8 @@ class Orden extends Conexion{
       $consulta = $this->conexion->prepare("CALL spu_registar_detalle_orden(?,?,?)");
       $respuesta["status"]= $consulta->execute(array(
         $datos["idproducto"],
-        $datos["cantidad"]
+        $datos["cantidad"],
+        $datos["precio"]
       ));
       $respuesta["message"] = ($respuesta["message"]) ? "Registrado" : "Error";
       return $respuesta;

@@ -40,7 +40,7 @@ session_start();
 									<a class="nav-link text-white" href="menu.php" aria-current="page">Orden</a>
 								</li>	
                 <li class="nav-item">
-									<a class="nav-link text-white" href="#" aria-current="page">Detalle</a>
+									<a class="nav-link text-white" href="Producto.php" aria-current="page">Producto</a>
 								</li>													
 							</ul>
 						</li>

@@ -15,11 +15,12 @@ class DetalleOrden extends Conexion{
             "message" => ""
         ];
         try{
-            $consulta = $this->conexion->prepare("CALL spu_detalle_orden_registrar (?,?,?)");
+            $consulta = $this->conexion->prepare("CALL spu_detalle_orden_registrar (?,?,?,?)");
             $respuesta["status"] = $consulta->execute(array(
-                $datos["idorden"],
+                $datos["idmesa"],
                 $datos["idproducto"],
-                $datos["cantidad"]
+                $datos["cantidad"],
+                $datos["precio"],
             ));
             $respuesta["message"] = ($respuesta["status"])  ?"Registrado correctamente"  : "Error";
             return $respuesta;

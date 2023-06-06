@@ -12,9 +12,9 @@ SELECT * FROM personas
 -- ----------------------------------------------------------
 INSERT INTO empleados (idpersona, nombrerol) VALUES 
 ('1','RECEPCIONISTA'),
-('2','MAITRE'),
+('2','MESERO'),
 ('3','MESERO'),
-('4','CHEF')
+('4','MESERO')
 
 
 SELECT * FROM empleados
@@ -108,8 +108,8 @@ SELECT * FROM ordenes
  -- ---------------------------------
 INSERT INTO detalle_ordenes (idorden,idproducto, cantidad)
 VALUES
-('1', '1','2'),
-('2', '2','1')
+('1', '1','','2'),
+('2', '2','','1')
 
 SELECT * FROM detalle_ordenes
 

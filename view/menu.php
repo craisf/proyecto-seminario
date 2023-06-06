@@ -48,7 +48,7 @@ session_start();
                                     <a class="nav-link text-white" href="menu.php" aria-current="page">Orden</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="#" aria-current="page">Detalle</a>
+                                    <a class="nav-link text-white" href="Producto.php" aria-current="page">Producto</a>
                                 </li>
                             </ul>
                         </li>
@@ -93,17 +93,7 @@ session_start();
 					?>
                 </div>
             </div>
-            <div class="p-3 col-md-10 mt-3">
-                <a href="#" class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
-                    data-bs-target="#modal-detalle-orden"><i class="fa-solid fa-money-bill-1-wave"></i> Registrar
-                </a>
-                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                    data-bs-target="#modal-producto-agregar">
-                    Launch
-                </button>
-                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
-                    Launch
-                </button>
+            <div class="p-3 col-md-10 mt-3">                
                 <div class="container-mesa " id="container-card">
                 </div>
             </div>
@@ -157,8 +147,8 @@ session_start();
                                 <input type="number" class="form-control" id="md-precio" readonly>
                             </div>
                             <div class="col-md-3 mt-3">
-                                <label for="md-total" class="form-label">total</label>
-                                <input type="number" class="form-control" id="md-total" readonly>
+                                <label for="md-importe" class="form-label">Importe</label>
+                                <input type="number" class="form-control" id="md-importe" readonly>
                             </div>
                             <div class="col-md-1 align-self-end ">
                                 <button type="button" class="btn btn-outline-secondary " id="md-producto-agregar"><i
@@ -181,9 +171,9 @@ session_start();
                         </table>
 
                         <div class="row justify-content-end mb-1">
-                            <label for="md-total" class="col form-label col-sm-1">Total:</label>
+                            <label for="md-importe" class="col form-label col-sm-1">Importe:</label>
                             <div class="col-sm-2">
-                                <input type="md-total" type="tetx" class="form-control text-end" readonly>
+                                <input type="md-total" id="md-add-importe" type="tetx" class="form-control text-end" readonly>
                             </div>
                         </div>
                     </form>
@@ -241,7 +231,7 @@ session_start();
                             </tbody>
                         </table>
                         <div class="row justify-content-end mb-1">
-                            <label for="md-dt-total" class="col form-label col-sm-1">Total:</label>
+                            <label for="md-dt-total" class="col form-label col-sm-1">Importe:</label>
                             <div class="col-sm-2">
                                 <input id="md-dt-total" type="text" class="form-control text-end" readonly>
                             </div>

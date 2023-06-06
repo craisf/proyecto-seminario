@@ -93,6 +93,7 @@ CREATE TABLE DETALLE_ORDENES
 iddetalle_orden	INT AUTO_INCREMENT PRIMARY KEY,
 idorden				INT 	NOT NULL,
 idproducto			INT 	NOT NULL,
+precio 				DECIMAL (7,2) 	NOT NULL,
 cantidad			INT 	NOT NULL,
 CONSTRAINT fk_idorden_TdetalleOrden FOREIGN KEY (idorden) REFERENCES ordenes (idorden),
 CONSTRAINT fk_idproducto_TdetalleOrden FOREIGN KEY (idproducto) REFERENCES productos (idproducto),

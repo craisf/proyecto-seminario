@@ -1,14 +1,15 @@
 <?php
-require_once '../controllers/Detalle_Orden.php';
+require_once '../models/Detalle_Orden.php';
 
 if(isset($_POST['operacion'])){
     $detalleorden = new DetalleOrden();
 
     if($_POST['operacion'] == 'registrar'){
         $datos=[
-            "idorden"   => $_POST["idorden"],
+            "idmesa"   => $_POST["idmesa"],
             "idproducto" => $_POST["idproducto"],
-            "cantidad"  => $_POST["cantidad"]
+            "cantidad"  => $_POST["cantidad"],
+            "precio" => $_POST["precio"]
         ];
         $resultado =  $detalleorden->registrar($datos);
         echo json_encode($resultado);

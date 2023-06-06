@@ -77,18 +77,25 @@ IN _idempleado		INT)
 BEGIN
 INSERT INTO ordenes (idmesa, idempleado) VALUES
 (_idmesa,_idempleado);
+
+UPDATE mesas SET
+estado = 'O'
+WHERE idmesa = _idmesa;
 END $$
 
+SELECT * FROM ordenes
+SELECT * FROM detalle_ordenes
 -- ----------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_registar_detalle_orden(
 IN _idproducto INT,
-IN _cantidad INT
+IN _cantidad INT,
+IN _precio   DECIMAL(7,2)
 )
 BEGIN
 SET @ultima_orden_id = (SELECT MAX(idorden)  AS 'id'FROM ordenes);
-INSERT INTO detalle_ordenes (idorden,idproducto,cantidad) VALUES
-(@ultima_orden_id, _idproducto, _cantidad);
+INSERT INTO detalle_ordenes (idorden,idproducto,cantidad, precio) VALUES
+(@ultima_orden_id, _idproducto, _cantidad, _precio);
 END $$
 
 
@@ -102,8 +109,8 @@ BEGIN
 SELECT detalle_ordenes.`iddetalle_orden`,
 	productos.nombreproducto,
 	detalle_ordenes.`cantidad`,
-	productos.precio,
-	detalle_ordenes.`cantidad` * productos.precio 'Importe'
+	detalle_ordenes.precio,
+	detalle_ordenes.`cantidad` * detalle_ordenes.precio 'Importe'
 	 FROM detalle_ordenes
 LEFT JOIN ordenes ON ordenes.idorden = detalle_ordenes.idorden
 LEFT JOIN productos ON productos.idproducto = detalle_ordenes.idproducto
@@ -114,25 +121,33 @@ CALL spu_detalle_orden ('1','1');
 -- -----------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_detalle_orden_registrar(
-IN _idorden INT,
+IN _idmesa INT,
 IN _idproducto INT,
-IN _cantidad INT
+IN _cantidad INT,
+IN _precio DECIMAL(7,2)
 )
 BEGIN
 	 DECLARE producto_existe INT;
-	 SELECT COUNT(*) producto_existe FROM detalle_ordenes WHERE idorden = _idorden AND idproducto = _idproducto;
+	 
+	 DECLARE _idorden INT;
+	 
+	 SELECT idorden INTO _idorden
+	 FROM ordenes WHERE idmesa = _idmesa AND fechahorapago  IS NULL;
+	 
+	 SELECT COUNT(*) INTO producto_existe
+	 FROM detalle_ordenes WHERE idorden = _idorden AND idproducto = _idproducto;
 	 
 	 IF producto_existe >0 THEN 
 		UPDATE detalle_ordenes SET
 		cantidad = cantidad + _cantidad
 		WHERE idorden = _idorden AND idproducto = _idproducto;
 	 ELSE
-		INSERT INTO detalle_ordenes(idorden,idproducto, cantidad) VALUES
-		(_idorden, _idproducto, _cantidad);
+		INSERT INTO detalle_ordenes(idorden,idproducto, cantidad, precio) VALUES
+		(_idorden, _idproducto, _cantidad, _precio);		
 	 END IF;
 END $$
 
-SELECT * FROM `detalle_ordenes`
+
 -- ---------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_mesas()

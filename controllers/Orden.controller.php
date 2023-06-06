@@ -61,7 +61,8 @@ if(isset($_POST['operacion'])){
   if($_POST['operacion'] == 'registrardetalleorden'){
     $datos=[
       "idproducto" => $_POST["idproducto"],
-      "cantidad" => $_POST["cantidad"]
+      "cantidad" => $_POST["cantidad"],
+      "precio" =>$_POST["precio"]
     ];
     $resultado = $orden->RegistrarDetalleOrden($datos);
     echo json_encode($resultado);

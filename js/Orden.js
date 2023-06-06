@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         document.querySelector("#modal-cambiar-estado")
     );
 
-    let idorden=0;
+    let idmesa = 0;
 
 
     function renderData(){
@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         ){                        
             if(card.dataset.status === 'O'){
                 cargarDetalle(card.dataset.idmesa);
+                
             }
         }  
 
@@ -94,7 +95,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
             e.target.classList.contains("agregar-producto") ||
             e.target.parentElement.classList.contains("agregar-producto")
         ){
-            if(card.dataset.status === 'O'){
+            if(card.dataset.status === 'O'){  
+                idmesa = card.dataset.idmesa              
                 MDAgproducto.toggle();
             }
         }        
@@ -144,6 +146,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         document.querySelector("#md-dt-fecha").value = busca.fechahoraorden;
                         document.querySelector("#md-dt-mesa").value = busca.numesa;
                         document.querySelector("#md-dt-empleado").value= busca.Empleado;
+
                         document.querySelector("#dt-tabla-datalle tbody").innerHTML="";
                         let total =0.0;
                         let fila = 1;
@@ -223,21 +226,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
             !document.querySelector("#md-producto").value ||
             !document.querySelector("#md-cantidad").value ||
             !document.querySelector("#md-precio").value ||
-            !document.querySelector("#md-total").value 
+            !document.querySelector("#md-importe").value 
         ){
-            alert("Seleccione un producto")
 
+            alert("Seleccione un producto");
         }else{
             const MDproducto = document.querySelector("#md-producto");
             const MDcantidad = document.querySelector("#md-cantidad");
             const MDprecio = document.querySelector("#md-precio");
-            const MDtotal = document.querySelector("#md-total");
+            const MDtotal = document.querySelector("#md-importe");
 
             let cuerpotabla = document.querySelectorAll("#md-tabla-datalle tbody");
+            console.log(cuerpotabla[0].children)
 
             let filas = Array.from(cuerpotabla[0].children);
 
-            let filaexiste = filas.find((fila)=>{
+            let filaexiste = filas.find((fila) => {
                 let productoNombre = fila.cells[1].innerText;
                 return(
                     productoNombre === MDproducto.options[MDproducto.selectedIndex].text
@@ -263,10 +267,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
                         <a type="button class="btn btn-sm me-1 md-eliminar"><i class="fa-regular fa-trash"></i></a>    
                         <a type="button class="btn btn-sm me-1 md-quitar"><i class="fa-solid fa-minus"></i></a>
                         <a type="button class="btn btn-sm me-1 md-añadir"><i class="fa-solid fa-plus"></i></a>
-                    </td>
+                    </td>                    
                 </tr>
                 `;
                 document.querySelector("#md-tabla-datalle tbody").innerHTML += nuevafila;
+                let importe = 0;
+                
+
+                Array.from(cuerpotabla[0].children).forEach(element => {
+                    importe += parseFloat(element.cells[4].textContent);                    
+                });
+
+                console.log(importe)
+                document.querySelector("#md-add-importe").value = String(importe);
             }
             MDAgproducto.selectedIndex=0;
             MDcantidad.value= "1";
@@ -284,7 +297,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         filatablas.forEach((element)=>{
             total+= parseFloat(element.cells[4].textContent);
         });
-        document.querySelector("#md-total").value = total.toFixed(2);
+
+        document.querySelector("#md-importe").value = total.toFixed(2);
     }
 
     function RegistrarOrden(){
@@ -298,37 +312,42 @@ document.addEventListener("DOMContentLoaded", ()=>{
             if(confirm("Esta seguro de registrar")){
                 const parametros = new URLSearchParams();
                 parametros.append("operacion", "registrarOrden");
-                parametros.append("idmesa", parseInt(document.querySelector("#md-mesa").dataset.idmesa));
-                parametros.append("idempleado", parseInt(document.querySelector("#md-empleados").dataset.value));
+                parametros.append("idmesa", 
+                document.querySelector("#md-mesa").dataset.idmesa);
+                parametros.append("idempleado", 
+                document.querySelector("#md-empleados").value);
+                
                 fetch("../controllers/Orden.controller.php", {
                     method: 'POST',
                     body: parametros
                 })
                     .then((res)=>res.json())
                     .then((datos)=>{
-                        if(datos.success){
-                            let tablacuerpo = querySelectorAll("#md-tabla-detalle tbody");
-                            let filatabla = Array.from(tablacuerpo[0].children);
+                        if(datos.status){
+                            let tablacuerpo = document.querySelector("#md-tabla-datalle tbody");
+                             let filatabla = tablacuerpo.querySelectorAll("tr") 
+                            console.log(filatabla);
 
                             filatabla.forEach((element)=>{
                                 const parametro = new URLSearchParams();
                                 parametro.append("operacion", "registrardetalleorden");
-                                parametro.append("idproducto",element.dataset.idproducto);
+                                parametro.append("idproducto", element.dataset.idproducto);
                                 parametro.append("cantidad", parseInt(element.cells[2].textContent));
+                                parametro.append("precio", (element.cells[3].textContent));
                                 fetch("../controllers/Orden.controller.php",{
                                     method: 'POST',
                                     body: parametro
                                 })
                             });
 
-                            const pm = new URLSearchParams();
+                            /* const pm = new URLSearchParams();
                             pm.append("operacion", "cambiarestado");
                             pm.append("idmesa",document.querySelector("#md-mesa").dataset.idmesa);
                             pm.append("estado", "O");
                             fetch("../controllers/Mesa.controller.php",{
                                 method: 'POST',
                                 body: pm
-                            })
+                            }) */
                             MDOrdennuevo.toggle();
                             document.querySelector("#form-orden-nueva").reset();
                             document.querySelector("#md-tabla-datalle tbody").innerHTML="";
@@ -345,7 +364,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
 
-    function aggdetalle(idorden){
+    function aggdetalle(){
         if(
             !document.querySelector("#ag-producto").value ||
             !document.querySelector("#ag-cantidad").value ||
@@ -357,9 +376,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
             if(confirm("¿Desea registrar este pedido?")){
                 const parametros = new URLSearchParams();
                 parametros.append("operacion","registrar");
-                parametros.append("idorden", idorden);
+                parametros.append("idmesa", idmesa);
                 parametros.append("idproducto", document.querySelector("#ag-producto").value);
                 parametros.append("cantidad", document.querySelector("#ag-cantidad").value);
+                parametros.append("precio",document.querySelector("#ag-precio").value);
                 fetch("../controllers/Detalle_Orden.php",{
                     method: 'POST',
                     body: parametros
@@ -422,7 +442,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if (document.querySelector("#md-cantidad").value > 0){
             const total = (parseInt(document.querySelector("#md-cantidad").value) * precio).toFixed(2);            
 
-            document.querySelector("#md-total").value = total;
+            document.querySelector("#md-importe").value = total;
         }
     });
 
@@ -435,7 +455,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         
         if (cantidad > 0){
             const total = (cantidad * precio).toFixed(2);
-            document.querySelector("#md-total").value = total;
+            document.querySelector("#md-importe").value = total;
         }else{
             document.querySelector("#md-total").value="";
         }        
@@ -472,8 +492,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     document
         .querySelector("#ag-agregar")
-        .addEventListener("click", ()=>{
-            aggdetalle(idorden);
+        .addEventListener("click", ()=>{            
+            aggdetalle();
         });
     
     document.querySelector("#md-tabla-datalle tbody").addEventListener("click", (e)=>{
