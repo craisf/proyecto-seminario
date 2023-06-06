@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,14 +91,14 @@
             </div>
             <div class="container">
                 <div class="row mt-3 mb-3">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <div class="card">
                             <div class="card-header bg-secondary text-light">
                                 Registrar Producto
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-11">
                                         <button type="button" class="btn btn-secondary col-md-12" data-bs-toggle="modal"
                                             data-bs-target="#modal-ag-producto">Registrar Producto</button>
                                     </div>
@@ -107,7 +110,7 @@
                 <!-- TABLA -->
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="table-producto" class="table table-sm" style="width: 90%;" >
+                        <table id="table-producto" class="table table-sm" style="width: 85%;" >
                             <thead>
                                 <tr>
                                     <th>#</th>

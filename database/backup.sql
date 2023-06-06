@@ -24,6 +24,7 @@ CREATE TABLE `detalle_ordenes` (
   `iddetalle_orden` int(11) NOT NULL AUTO_INCREMENT,
   `idorden` int(11) NOT NULL,
   `idproducto` int(11) NOT NULL,
+  `precio` decimal(7,2) NOT NULL,
   `cantidad` int(11) NOT NULL,
   PRIMARY KEY (`iddetalle_orden`),
   KEY `fk_idorden_TdetalleOrden` (`idorden`),
@@ -31,12 +32,19 @@ CREATE TABLE `detalle_ordenes` (
   CONSTRAINT `fk_idorden_TdetalleOrden` FOREIGN KEY (`idorden`) REFERENCES `ordenes` (`idorden`),
   CONSTRAINT `fk_idproducto_TdetalleOrden` FOREIGN KEY (`idproducto`) REFERENCES `productos` (`idproducto`),
   CONSTRAINT `fk_cantidad_tdetalleOrden` CHECK (`cantidad` > 0)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `detalle_ordenes` */
 
-insert  into `detalle_ordenes`(`iddetalle_orden`,`idorden`,`idproducto`,`cantidad`) values 
-(1,1,1,2);
+insert  into `detalle_ordenes`(`iddetalle_orden`,`idorden`,`idproducto`,`precio`,`cantidad`) values 
+(1,1,4,8.99,1),
+(2,1,13,14.99,1),
+(3,1,3,14.99,1),
+(4,1,14,13.99,1),
+(5,2,8,8.99,1),
+(6,2,12,7.99,3),
+(7,3,4,8.99,1),
+(8,4,7,12.99,5);
 
 /*Table structure for table `empleados` */
 
@@ -56,10 +64,10 @@ CREATE TABLE `empleados` (
 /*Data for the table `empleados` */
 
 insert  into `empleados`(`idempleado`,`idpersona`,`nombrerol`,`turnoinicio`,`turnofin`) values 
-(1,1,'RECEPCIONISTA','18:52:41',NULL),
-(2,2,'MESERO','18:52:41',NULL),
-(3,3,'MESERO','18:52:41',NULL),
-(4,4,'MESERO','18:52:41',NULL);
+(1,1,'RECEPCIONISTA','17:34:08',NULL),
+(2,2,'MESERO','17:34:08',NULL),
+(3,3,'MESERO','17:34:08',NULL),
+(4,4,'MESERO','17:34:08',NULL);
 
 /*Table structure for table `mesas` */
 
@@ -73,15 +81,15 @@ CREATE TABLE `mesas` (
   PRIMARY KEY (`idmesa`),
   UNIQUE KEY `uk_numesa_tmesas` (`numesa`),
   CONSTRAINT `ck_estado_tmesas` CHECK (`estado` in ('D','O'))
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `mesas` */
 
 insert  into `mesas`(`idmesa`,`numesa`,`capacidad`,`estado`) values 
 (1,'Mesa 1',2,'O'),
-(2,'Mesa 2',4,'D'),
-(3,'Mesa 3',6,'D'),
-(4,'Mesa 4',2,'D'),
+(2,'Mesa 2',4,'O'),
+(3,'Mesa 3',6,'O'),
+(4,'Mesa 4',2,'O'),
 (5,'Mesa 5',4,'D'),
 (6,'Mesa 6',8,'D'),
 (7,'Mesa 7',6,'D'),
@@ -91,7 +99,13 @@ insert  into `mesas`(`idmesa`,`numesa`,`capacidad`,`estado`) values
 (11,'Mesa 11',2,'D'),
 (12,'Mesa 12',2,'D'),
 (13,'Mesa 13',2,'D'),
-(14,'Mesa 14',2,'D');
+(14,'Mesa 14',2,'D'),
+(15,'Mesa 15',2,'D'),
+(16,'Mesa 16',2,'D'),
+(17,'Mesa 17',2,'D'),
+(18,'Mesa 18',2,'D'),
+(19,'Mesa 19',2,'D'),
+(20,'Mesa 20',2,'D');
 
 /*Table structure for table `ordenes` */
 
@@ -118,12 +132,15 @@ CREATE TABLE `ordenes` (
   CONSTRAINT `ck_tipocomprobante_tordenes` CHECK (`tipocomprobante` in ('BS','BE')),
   CONSTRAINT `ck_preciototal_tordenes` CHECK (`preciototal` = (`preciototal` > 0)),
   CONSTRAINT `ck_estado_tordenes` CHECK (`estado` in ('PE','EN'))
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `ordenes` */
 
 insert  into `ordenes`(`idorden`,`idmesa`,`idempleado`,`idcliente`,`fechahoraorden`,`fechahorapago`,`tipocomprobante`,`numcomprobante`,`preciototal`,`estado`) values 
-(1,1,1,5,'2023-05-31 19:51:19',NULL,'BS','BLS-00001',NULL,'PE');
+(1,1,1,NULL,'2023-06-06 17:37:42',NULL,NULL,NULL,NULL,'PE'),
+(2,2,1,NULL,'2023-06-06 17:38:09',NULL,NULL,NULL,NULL,'PE'),
+(3,3,2,NULL,'2023-06-06 17:38:19',NULL,NULL,NULL,NULL,'PE'),
+(4,4,4,NULL,'2023-06-06 17:38:26',NULL,NULL,NULL,NULL,'PE');
 
 /*Table structure for table `personas` */
 
@@ -235,8 +252,8 @@ BEGIN
 select detalle_ordenes.`iddetalle_orden`,
 	productos.nombreproducto,
 	detalle_ordenes.`cantidad`,
-	productos.precio,
-	detalle_ordenes.`cantidad` * productos.precio 'Importe'
+	detalle_ordenes.precio,
+	detalle_ordenes.`cantidad` * detalle_ordenes.precio 'Importe'
 	 from detalle_ordenes
 left join ordenes on ordenes.idorden = detalle_ordenes.idorden
 left join productos on productos.idproducto = detalle_ordenes.idproducto
@@ -251,22 +268,63 @@ DELIMITER ;
 DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_detalle_orden_registrar`(
-in _idorden int,
+in _idmesa int,
 in _idproducto int,
-in _cantidad int
+in _cantidad int,
+in _precio decimal(7,2)
 )
 begin
 	 declare producto_existe int;
-	 select count(*) producto_existe from detalle_ordenes where idorden = _idorden and idproducto = _idproducto;
+	 
+	 declare _idorden int;
+	 
+	 select idorden into _idorden
+	 from ordenes where idmesa = _idmesa and fechahorapago  IS NULL;
+	 
+	 select count(*) into producto_existe
+	 from detalle_ordenes where idorden = _idorden and idproducto = _idproducto;
 	 
 	 if producto_existe >0 then 
 		update detalle_ordenes set
 		cantidad = cantidad + _cantidad
 		where idorden = _idorden and idproducto = _idproducto;
 	 else
-		insert into detalle_ordenes(idorden,idproducto, cantidad) values
-		(_idorden, _idproducto, _cantidad);
+		insert into detalle_ordenes(idorden,idproducto, cantidad, precio) values
+		(_idorden, _idproducto, _cantidad, _precio);		
 	 end if;
+end */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_grafico` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_grafico` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_grafico`()
+begin 
+select productos.`categoria`, sum(detalle_ordenes.cantidad) as 'cantidad'
+from ordenes
+left join detalle_ordenes  on detalle_ordenes.`idorden` = ordenes.`idorden`
+LEFT join productos on productos.`idproducto` = productos.idproducto
+group by productos.`categoria`;
+end */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_graficose` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_graficose` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_graficose`()
+begin 
+select CONCAT (emp.nombre, ' ', emp.apellido) AS 'Empleado',
+	count(*) as 'Ventas'
+	from ordenes 
+  LEFT JOIN empleados ON empleados.idempleado = ordenes.idempleado
+  LEFT JOIN personas emp ON emp.idpersona = empleados.idpersona 
+  group by Empleado;
 end */$$
 DELIMITER ;
 
@@ -293,7 +351,7 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_listar_mesas`()
 BEGIN
-SELECT * FROM mesas;    
+SELECT* FROM mesas;    
 END */$$
 DELIMITER ;
 
@@ -309,14 +367,14 @@ SELECT
 	ordenes.idorden,
 	mesas.numesa,
 	mesas.capacidad,
-	concat (cli.nombre, ' ', cli.apellido) as 'Cliente',
+	CONCAT (cli.nombre, ' ', cli.apellido) AS 'Cliente',
 	ordenes.fechahoraorden,	
 	ordenes.estado
 FROM ordenes
   LEFT JOIN mesas ON mesas.idmesa = ordenes.idmesa
   LEFT JOIN empleados ON empleados.idempleado = ordenes.idempleado
   LEFT JOIN personas emp ON emp.idpersona = empleados.idpersona
-  left join personas cli on cli.idpersona = ordenes.idcliente
+  LEFT JOIN personas cli ON cli.idpersona = ordenes.idcliente
 	WHERE ordenes.idorden 
 	IN(SELECT MAX(ordenes.idorden) FROM ordenes GROUP BY ordenes.`idorden`) 
 	ORDER BY ordenes.`idorden` ASC;
@@ -343,24 +401,105 @@ DELIMITER ;
 
 DELIMITER $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_ordenes_buscar`( in _idorden int)
-begin
-select ordenes.idorden,
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_ordenes_buscar`( IN _idorden INT)
+BEGIN
+SELECT ordenes.idorden,
 	mesas.numesa, 
 	CONCAT (cli.nombre, ' ', cli.apellido) AS 'Cliente',
-	concat (emp.nombre, ' ', emp.apellido) as 'Empleado',
+	CONCAT (emp.nombre, ' ', emp.apellido) AS 'Empleado',
 	ordenes.fechahoraorden,
 	ordenes.tipocomprobante,
 	ordenes.numcomprobante,
 	ordenes.estado
-	from ordenes
+	FROM ordenes
   LEFT JOIN mesas ON mesas.idmesa = ordenes.idmesa
   LEFT JOIN empleados ON empleados.idempleado = ordenes.idempleado
   LEFT JOIN personas emp ON emp.idpersona = empleados.idpersona
   LEFT JOIN personas cli ON cli.idpersona = ordenes.idcliente
-  where ordenes.idorden = _idorden;
+  WHERE ordenes.idorden = _idorden;
 	
-end */$$
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_producto_actualizar` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_producto_actualizar` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_actualizar`(
+    IN _idproducto INT,
+    IN _nombreproducto VARCHAR(80),
+    IN _descripcion VARCHAR(500),
+    IN _precio DECIMAL(7,2),
+    IN _categoria VARCHAR(30)
+)
+BEGIN
+    UPDATE productos
+    SET nombreproducto = _nombreproducto,
+        descripcion = _descripcion,
+        precio = _precio,
+        categoria = _categoria
+    WHERE idproducto = _idproducto;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_producto_eliminar` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_producto_eliminar` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_eliminar`(
+    IN _idproducto INT
+)
+BEGIN
+    DELETE FROM productos WHERE idproducto = _idproducto;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_producto_listar` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_producto_listar` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_listar`()
+BEGIN
+    SELECT * FROM productos;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_producto_obt` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_producto_obt` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_obt`(
+    IN _idproducto INT
+)
+BEGIN
+    select * FROM productos WHERE idproducto = _idproducto;
+END */$$
+DELIMITER ;
+
+/* Procedure structure for procedure `spu_producto_registrar` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `spu_producto_registrar` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_producto_registrar`(
+    IN _nombreproducto VARCHAR(80),
+    IN _descripcion VARCHAR(500),
+    IN _precio DECIMAL(7,2),
+    IN _categoria VARCHAR(30)
+)
+BEGIN
+    INSERT INTO productos (nombreproducto, descripcion, precio, categoria)
+    VALUES (_nombreproducto, _descripcion, _precio, _categoria);
+END */$$
 DELIMITER ;
 
 /* Procedure structure for procedure `spu_registar_detalle_orden` */
@@ -371,12 +510,13 @@ DELIMITER $$
 
 /*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `spu_registar_detalle_orden`(
 in _idproducto int,
-in _cantidad int
+in _cantidad int,
+IN _precio   decimal(7,2)
 )
 begin
 set @ultima_orden_id = (select max(idorden)  as 'id'from ordenes);
-insert into detalle_ordenes (idorden,idproducto,cantidad) values
-(@ultima_orden_id, _idproducto, _cantidad);
+insert into detalle_ordenes (idorden,idproducto,cantidad, precio) values
+(@ultima_orden_id, _idproducto, _cantidad, _precio);
 end */$$
 DELIMITER ;
 
@@ -392,6 +532,10 @@ IN _idempleado		INT)
 BEGIN
 INSERT INTO ordenes (idmesa, idempleado) VALUES
 (_idmesa,_idempleado);
+
+update mesas set
+estado = 'O'
+where idmesa = _idmesa;
 END */$$
 DELIMITER ;
 

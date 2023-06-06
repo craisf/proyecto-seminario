@@ -35,7 +35,6 @@ FROM ordenes
 	ORDER BY ordenes.`idorden` ASC;
 END $$
 
-CALL spu_listar_ordenes()
 -- ------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_ordenes_buscar( IN _idorden INT)
@@ -57,8 +56,6 @@ SELECT ordenes.idorden,
 	
 END $$
 
-CALL spu_ordenes_buscar(1)
-SELECT* FROM ordenes
 -- ----------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_ventaxmesa( IN _idmesa INT)
@@ -68,7 +65,6 @@ LEFT JOIN mesas ON mesas.idmesa = ordenes.`idmesa`
 WHERE ordenes.`estado` ='PE' AND mesas.idmesa = _idmesa;
 END $$
 
-CALL spu_ventaxmesa('1');
 -- --------------------------------------------------- 
 DELIMITER $$
 CREATE PROCEDURE spu_registrar_orden(
@@ -83,8 +79,6 @@ estado = 'O'
 WHERE idmesa = _idmesa;
 END $$
 
-SELECT * FROM ordenes
-SELECT * FROM detalle_ordenes
 -- ----------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_registar_detalle_orden(
@@ -117,7 +111,6 @@ LEFT JOIN productos ON productos.idproducto = detalle_ordenes.idproducto
 WHERE detalle_ordenes.`idorden` = _idorden AND ordenes.`idmesa` = _idmesa;
 END $$
 
-CALL spu_detalle_orden ('1','1');
 -- -----------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_detalle_orden_registrar(
@@ -168,8 +161,7 @@ estado = _estado
 	WHERE idmesa =_idmesa;
 END $$
 
-SELECT * FROM mesas
-CALL spu_canbiarestado('1','O');
+
 -- -----------------------------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_empleados()
@@ -180,7 +172,7 @@ FROM empleados
 INNER JOIN personas ON personas.`idpersona` = empleados.idpersona;
 END $$
 
-CALL spu_listar_empleados();
+
 -- -----------------------------------------------------------------------
 DELIMITER $$
 CREATE PROCEDURE spu_listar_productos()
@@ -190,7 +182,6 @@ SELECT idproducto,nombreproducto, precio
 	ORDER BY nombreproducto;
 END $$
 
-CALL spu_listar_productos();
 -- ---------------------------------------------------------------------------
 
 -- ----------------------------------------------------------------------------
@@ -199,12 +190,27 @@ CALL spu_listar_productos();
 DELIMITER $$
 CREATE PROCEDURE spu_grafico()
 BEGIN 
-SELECT productos.`categoria`, SUM(detalle_ordenes.`cantidad`) AS 'cantidad'
+SELECT productos.`categoria`, SUM(detalle_ordenes.cantidad) AS 'cantidad'
 FROM ordenes
-INNER JOIN detalle_ordenes  ON detalle_ordenes.`idorden` = ordenes.`idorden`
-INNER JOIN productos ON productos.`idproducto` = productos.idproducto
+LEFT JOIN detalle_ordenes  ON detalle_ordenes.`idorden` = ordenes.`idorden`
+LEFT JOIN productos ON productos.`idproducto` = productos.idproducto
 GROUP BY productos.`categoria`;
 END $$
+
+
+DELIMITER $$
+CREATE PROCEDURE spu_graficose()
+BEGIN 
+SELECT CONCAT (emp.nombre, ' ', emp.apellido) AS 'Empleado',
+	COUNT(*) AS 'Ventas'
+	FROM ordenes 
+  LEFT JOIN empleados ON empleados.idempleado = ordenes.idempleado
+  LEFT JOIN personas emp ON emp.idpersona = empleados.idpersona 
+  GROUP BY Empleado;
+END $$
+
+
+
 
 SELECT * FROM ordenes
 SELECT* FROM detalle_ordenes
@@ -223,7 +229,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL spu_producto_listar()
+
 
 
 DELIMITER $$
@@ -258,7 +264,7 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL spu_producto_obt('2');
+
 
 
 DELIMITER $$
@@ -278,12 +284,3 @@ BEGIN
     WHERE idproducto = _idproducto;
 END $$
 DELIMITER ;
-
-
-
-
-
-CALL spu_producto_eliminar('26')
-
-
-

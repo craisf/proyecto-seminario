@@ -137,10 +137,10 @@ session_start();
             <div class="col-md-6">
                 <canvas id="grafico"></canvas>
             </div>
+			<div class="col-md-6">
+				<canvas id="grafico1"></canvas>
+			</div>
         </div>
-		<div class="col-md-6">
-			<canvas id="grafico1"></canvas>
-		</div>
     </div>
     </div>
 
@@ -156,7 +156,7 @@ session_start();
     document.addEventListener("DOMContentLoaded", () => {
         const lienzo = document.getElementById('grafico');
         const lienzo1 = document.getElementById('grafico1');
-        const bgcolores = ['#E56619','#F9C607', '#FF7420', '#07D8F9']
+        const bgcolores = ['#E56619', '#F9C607', '#FF7420', '#07D8F9']
 
         const graficoBarras = new Chart(lienzo, {
             type: 'bar',
@@ -167,8 +167,21 @@ session_start();
                     backgroundColor: bgcolores,
                     label: 'Cant Categoria',
                     data: [],
-                    borderWidth: 1
+                    borderWidth: 1,
+
                 }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'N° Categoria de Productos'
+                    }
+                },
             }
         })
 
@@ -183,55 +196,67 @@ session_start();
                     data: [],
                     borderWidth: 1
                 }]
+            },
+			options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ordenes de cada empleados'
+                    }
+                },
             }
         })
 
-		function cargargrafico(){
-			const parametros = new URLSearchParams();
-			parametros.append("operacion", "graficof")
-			fetch("../controllers/Grafico.controller.php",{
-				method: 'POST',
-				body: parametros
-			})			
-				.then(res => res.json())
-				.then(datos => {
-					const idor =[];
-					const canti = [];
-					datos.forEach(element=>{
-						idor.push(element.categoria);
-						canti.push(element.cantidad);
-					})
-					graficoBarras.data.labels = idor;
-					graficoBarras.data.datasets[0].data = canti;
-					graficoBarras.update();
-				})
-		}
+        function cargargrafico() {
+            const parametros = new URLSearchParams();
+            parametros.append("operacion", "graficof")
+            fetch("../controllers/Grafico.controller.php", {
+                    method: 'POST',
+                    body: parametros
+                })
+                .then(res => res.json())
+                .then(datos => {
+                    const idor = [];
+                    const canti = [];
+                    datos.forEach(element => {
+                        idor.push(element.categoria);
+                        canti.push(element.cantidad);
+                    })
+                    graficoBarras.data.labels = idor;
+                    graficoBarras.data.datasets[0].data = canti;
+                    graficoBarras.update();
+                })
+        }
 
 
-		function cargargrafico1(){
-			const parametros = new URLSearchParams();
-			parametros.append("operacion", "graficose");
-			fetch("../controllers/Grafico.controller.php",{
-				method: 'POST',
-				body: parametros
-			})
-				.then( res => res.json())
-				.then( datos =>{
-					const emp = [];
-					const ven = [];
-					datos.forEach(element=>{
-						emp.push(element.Empleado);
-						ven.push(element.Ventas);
-					})
-					graficoPie.data.labels = emp;
-					graficoPie.data.datasets[0].data = ven;
-					graficoPie.update();
-				})
+        function cargargrafico1() {
+            const parametros = new URLSearchParams();
+            parametros.append("operacion", "graficose");
+            fetch("../controllers/Grafico.controller.php", {
+                    method: 'POST',
+                    body: parametros
+                })
+                .then(res => res.json())
+                .then(datos => {
+                    const emp = [];
+                    const ven = [];
+                    datos.forEach(element => {
+                        emp.push(element.Empleado);
+                        ven.push(element.Ventas);
+                    })
+                    graficoPie.data.labels = emp;
+                    graficoPie.data.datasets[0].data = ven;
+                    graficoPie.update();
+                })
 
-		}
+        }
 
-		cargargrafico();
-		cargargrafico1();
+        cargargrafico();
+        cargargrafico1();
     });
     </script>
 </body>
